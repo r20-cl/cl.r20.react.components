@@ -1,6 +1,14 @@
 import * as React from 'react';
 
-export default class HelloWorld extends React.Component<any, any> {
+export interface HelloWorldProps {
+  color: string;
+}
+
+export interface HelloWorldState {
+  bla: string;
+}
+
+export default class HelloWorld extends React.Component<HelloWorldProps, HelloWorldState> {
   renders(): any {
     return (
       <div style={{color: this.props.color}}>
