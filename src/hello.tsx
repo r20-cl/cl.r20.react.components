@@ -11,7 +11,9 @@ export interface HelloWorldState {
 export class HelloWorld extends React.Component<HelloWorldProps, HelloWorldState> {
   render(): any {
     return (
-      <div style={{"color": this.props.color}}>
+      <div
+        data-testid="hello-world"
+        style={{"color": this.props.color}}>
         Hello world!
       </div>
     );
