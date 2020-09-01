@@ -1,27 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "./lib",
-    "target": "es5",
     "module": "commonjs",
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "removeComments": true,
-    "declaration": true,
-    "sourceMap": true,
+    "outDir": "./dist/",
+    "moduleResolution": "node",
     "jsx": "react",
-    "lib": [
-      "es2017"
-    ],
-    "typeRoots": [
-      "index.d.ts",
-      "node_modules/@types"
-    ]
+    "esModuleInterop": true,
+    "lib": ["es2015", "dom"]
   },
-  "include": [
-    "./src/**/*.tsx",
-    "./src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src"],
+  "exclude": ["src/__tests__"]
 }

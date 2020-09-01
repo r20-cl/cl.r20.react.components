@@ -9,12 +9,12 @@
   <script src="bundle.js"></script>
 </head>
 <body>
-<div id="mydiv"></div>
+<div id="root"></div>
 <script type="text/babel">
   window.onload = function () {
     const bundle = require("bundle");
-    const C = bundle.default;
-    ReactDOM.render(<C color="red"/>, document.getElementById('mydiv'))
+    const HelloWorld = bundle.HelloWorld;
+    ReactDOM.render(<HelloWorld color="red"/>, document.getElementById('root'))
   }
 </script>
 </body>

@@ -2,9 +2,9 @@ node_modules/
 coverage/
 .nyc_output/
 *.log
-lib/
+dist/
 .idea
 docs/
 .vscode/
 *.sqlite3
-test/data/bundle*
+demo/bundle*
