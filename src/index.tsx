@@ -1,17 +1,17 @@
 import * as React from 'react';
 
 export interface HelloWorldProps {
-  color: string;
+  // TODO
 }
 
 export interface HelloWorldState {
-  bla: string;
+  // TODO
 }
 
 export default class HelloWorld extends React.Component<HelloWorldProps, HelloWorldState> {
-  renders(): any {
+  render(): any {
     return (
-      <div style={{color: this.props.color}}>
+      <div>
         Hello world!
       </div>
     );
