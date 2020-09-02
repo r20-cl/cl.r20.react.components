@@ -1,11 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as React from "react";
+import {strictEqual} from "assert";
 import {fireEvent, render} from "@testing-library/react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {HelloWorld, HelloWorldProps} from "../hello";
+import {fake} from "@miqro/core";
 
-function renderLoginForm(props: Partial<HelloWorldProps> = {}) {
+function renderHelloWorldComponent(props: Partial<HelloWorldProps> = {}) {
   const defaultProps: HelloWorldProps = {
     color: "red"
   };
@@ -14,7 +16,23 @@ function renderLoginForm(props: Partial<HelloWorldProps> = {}) {
 
 describe("<HelloWorld />", () => {
   test("should display hello world with color style and change content with button click and input change", async () => {
-    const {findByTestId} = renderLoginForm();
+
+    const fakeHelloCB = fake((event) => {
+      switch (fakeHelloCB.callCount) {
+        case 1:
+          strictEqual(event.text, "bye");
+          break;
+        case 2:
+          strictEqual(event.text, "Hello world bla!");
+          break;
+        default:
+          strictEqual(false, true, "bad state");
+      }
+    });
+
+    const {findByTestId} = renderHelloWorldComponent({
+      onClick: fakeHelloCB
+    });
 
     const hello = await findByTestId("hello-world");
     const nameInput = await findByTestId("name-input");
@@ -40,5 +58,7 @@ describe("<HelloWorld />", () => {
     expect(hello).toHaveTextContent("Hello world bla!");
     expect(byeButton).toHaveTextContent("bye");
     expect(hello).toHaveStyle("color: red;");
+
+    strictEqual(fakeHelloCB.callCount, 2);
   });
 });

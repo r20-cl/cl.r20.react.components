@@ -2,6 +2,7 @@ import * as React from 'react';
 
 export interface HelloWorldProps {
   color: string;
+  onClick?: (event: { text: string; }) => void;
 }
 
 export interface HelloWorldState {
@@ -16,6 +17,21 @@ export class HelloWorld extends React.Component<HelloWorldProps, HelloWorldState
       flag: false,
       name: ""
     };
+    this.greet = this.greet.bind(this);
+  }
+
+  greet(): void {
+    this.setState({flag: !this.state.flag}, () => {
+      if (this.props.onClick) {
+        try {
+          this.props.onClick({
+            text: this.state.flag ? `bye${this.state.name ? ` ${this.state.name}` : ""}` : `Hello world${this.state.name ? ` ${this.state.name}` : ""}!`
+          })
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    })
   }
 
   render(): any {
@@ -31,7 +47,7 @@ export class HelloWorld extends React.Component<HelloWorldProps, HelloWorldState
           type="text" onChange={event => this.setState({name: event.target.value})}/>
         <button
           data-testid="bye-button"
-          onClick={() => this.setState({flag: !this.state.flag})}>{this.state.flag ? "hello" : "bye"}</button>
+          onClick={this.greet}>{this.state.flag ? "hello" : "bye"}</button>
       </div>
     );
   }
