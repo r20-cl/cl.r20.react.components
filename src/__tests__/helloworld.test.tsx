@@ -13,7 +13,7 @@ function renderLoginForm(props: Partial<HelloWorldProps> = {}) {
 }
 
 describe("<HelloWorld />", () => {
-  test("should display hello world with color style and change content with button click", async () => {
+  test("should display hello world with color style and change content with button click and input change", async () => {
     const {findByTestId} = renderLoginForm();
 
     const hello = await findByTestId("hello-world");
