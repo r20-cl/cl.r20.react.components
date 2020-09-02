@@ -13,11 +13,9 @@ function renderLoginForm(props: Partial<HelloWorldProps> = {}) {
 describe("<HelloWorld />", () => {
   test("should display hello world with color style and change content with button click", async () => {
     const {findByTestId} = renderLoginForm();
-
-    // fireEvent.change(username, { target: { value: "test" } });
-
-
+    
     const hello = await findByTestId("hello-world");
+    const nameInput = await findByTestId("name-input");
     const byeButton = await findByTestId("bye-button");
     expect(hello).toHaveTextContent("Hello world!");
     expect(byeButton).toHaveTextContent("bye");
@@ -27,6 +25,18 @@ describe("<HelloWorld />", () => {
 
     expect(hello).toHaveTextContent("bye");
     expect(byeButton).toHaveTextContent("hello");
+    expect(hello).toHaveStyle("color: red;");
+
+    fireEvent.change(nameInput, {target: {value: "bla"}});
+
+    expect(hello).toHaveTextContent("bye bla");
+    expect(byeButton).toHaveTextContent("hello");
+    expect(hello).toHaveStyle("color: red;");
+
+    fireEvent.click(byeButton);
+
+    expect(hello).toHaveTextContent("Hello world bla!");
+    expect(byeButton).toHaveTextContent("bye");
     expect(hello).toHaveStyle("color: red;");
   });
 });
