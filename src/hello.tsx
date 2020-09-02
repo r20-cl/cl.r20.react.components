@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export interface HelloWorldProps {
   color: string;
-  onClick?: (event: { text: string; }) => void;
+  onClick?: (event: { name: string; event: "bye" | "hello" }) => void;
 }
 
 export interface HelloWorldState {
@@ -25,7 +25,8 @@ export class HelloWorld extends React.Component<HelloWorldProps, HelloWorldState
       if (this.props.onClick) {
         try {
           this.props.onClick({
-            text: this.state.flag ? `bye${this.state.name ? ` ${this.state.name}` : ""}` : `Hello world${this.state.name ? ` ${this.state.name}` : ""}!`
+            name: this.state.name,
+            event: this.state.flag ? "bye" : "hello"
           })
         } catch (e) {
           console.error(e);

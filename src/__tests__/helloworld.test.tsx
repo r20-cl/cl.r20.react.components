@@ -20,10 +20,12 @@ describe("<HelloWorld />", () => {
     const fakeHelloCB = fake((event) => {
       switch (fakeHelloCB.callCount) {
         case 1:
-          strictEqual(event.text, "bye");
+          strictEqual(event.name, "");
+          strictEqual(event.event, "bye");
           break;
         case 2:
-          strictEqual(event.text, "Hello world bla!");
+          strictEqual(event.name, "bla");
+          strictEqual(event.event, "hello");
           break;
         default:
           strictEqual(false, true, "bad state");
