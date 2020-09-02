@@ -10,7 +10,7 @@ export interface HelloWorldState {
 }
 
 export class HelloWorld extends React.Component<HelloWorldProps, HelloWorldState> {
-  constructor(props) {
+  constructor(props: HelloWorldProps) {
     super(props);
     this.state = {
       bye: false,
