@@ -16,13 +16,6 @@ export class HelloWorld extends React.Component<HelloWorldProps, HelloWorldState
       bye: false,
       name: ""
     };
-    this.bye = this.bye.bind(this);
-  }
-
-  bye(): void {
-    this.setState({
-      bye: !this.state.bye
-    });
   }
 
   render(): any {
@@ -38,7 +31,7 @@ export class HelloWorld extends React.Component<HelloWorldProps, HelloWorldState
           type="text" onChange={event => this.setState({name: event.target.value})}/>
         <button
           data-testid="bye-button"
-          onClick={this.bye}>{this.state.bye ? "hello" : "bye"}</button>
+          onClick={event => this.setState({bye: !this.state.bye})}>{this.state.bye ? "hello" : "bye"}</button>
       </div>
     );
   }
