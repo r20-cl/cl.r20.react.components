@@ -1,8 +1,13 @@
 import * as React from 'react';
 
+export interface HelloWorldClickEvent {
+  name: string;
+  event: "bye" | "hello"
+}
+
 export interface HelloWorldProps {
   color: string;
-  onClick?: (event: { name: string; event: "bye" | "hello" }) => void;
+  onClick?: (event: HelloWorldClickEvent) => void;
 }
 
 export interface HelloWorldState {

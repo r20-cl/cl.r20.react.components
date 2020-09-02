@@ -3,7 +3,7 @@ import * as React from "react";
 import {strictEqual} from "assert";
 import {fireEvent, render, RenderResult} from "@testing-library/react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {HelloWorld, HelloWorldProps} from "../hello";
+import {HelloWorld, HelloWorldClickEvent, HelloWorldProps} from "../hello";
 import {fake} from "@miqro/core";
 
 const renderHelloWorldComponent = (props: Partial<HelloWorldProps> = {}): RenderResult => {
@@ -16,7 +16,7 @@ const renderHelloWorldComponent = (props: Partial<HelloWorldProps> = {}): Render
 describe("<HelloWorld />", () => {
   test("should display hello world with color style and change content with button click and input change", async () => {
 
-    const fakeHelloCB = fake((event) => {
+    const fakeHelloCB = fake((event: HelloWorldClickEvent): void => {
       switch (fakeHelloCB.callCount) {
         case 1:
           strictEqual(event.name, "");
