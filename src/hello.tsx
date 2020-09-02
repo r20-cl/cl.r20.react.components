@@ -5,7 +5,7 @@ export interface HelloWorldProps {
 }
 
 export interface HelloWorldState {
-  bye: boolean;
+  flag: boolean;
   name: string;
 }
 
@@ -13,7 +13,7 @@ export class HelloWorld extends React.Component<HelloWorldProps, HelloWorldState
   constructor(props: HelloWorldProps) {
     super(props);
     this.state = {
-      bye: false,
+      flag: false,
       name: ""
     };
   }
@@ -24,14 +24,14 @@ export class HelloWorld extends React.Component<HelloWorldProps, HelloWorldState
         <p
           data-testid="hello-world"
           style={{"color": this.props.color}}>
-          {this.state.bye ? `bye${this.state.name ? ` ${this.state.name}` : ""}` : `Hello world${this.state.name ? ` ${this.state.name}` : ""}!`}
+          {this.state.flag ? `bye${this.state.name ? ` ${this.state.name}` : ""}` : `Hello world${this.state.name ? ` ${this.state.name}` : ""}!`}
         </p>
         <input
           data-testid="name-input"
           type="text" onChange={event => this.setState({name: event.target.value})}/>
         <button
           data-testid="bye-button"
-          onClick={() => this.setState({bye: !this.state.bye})}>{this.state.bye ? "hello" : "bye"}</button>
+          onClick={() => this.setState({flag: !this.state.flag})}>{this.state.flag ? "hello" : "bye"}</button>
       </div>
     );
   }
