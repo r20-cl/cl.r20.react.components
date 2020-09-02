@@ -1,18 +1,17 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as React from "react";
 import {strictEqual} from "assert";
-import {fireEvent, render} from "@testing-library/react";
-
+import {fireEvent, render, RenderResult} from "@testing-library/react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {HelloWorld, HelloWorldProps} from "../hello";
 import {fake} from "@miqro/core";
 
-function renderHelloWorldComponent(props: Partial<HelloWorldProps> = {}) {
+const renderHelloWorldComponent = (props: Partial<HelloWorldProps> = {}): RenderResult => {
   const defaultProps: HelloWorldProps = {
     color: "red"
   };
   return render(<HelloWorld {...defaultProps} {...props} />);
-}
+};
 
 describe("<HelloWorld />", () => {
   test("should display hello world with color style and change content with button click and input change", async () => {
