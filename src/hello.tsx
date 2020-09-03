@@ -5,9 +5,11 @@ export interface HelloWorldClickEvent {
   event: "bye" | "hello"
 }
 
+export type OnClickType = (event: HelloWorldClickEvent) => void;
+
 export interface HelloWorldProps {
   color: string;
-  onClick?: (event: HelloWorldClickEvent) => void;
+  onClick?: OnClickType;
 }
 
 export interface HelloWorldState {
