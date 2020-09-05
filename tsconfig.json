@@ -1,12 +1,25 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
-    "module": "commonjs",
-    "outDir": "./dist/",
-    "moduleResolution": "node",
     "jsx": "react",
+    "strict": false,
+    "outDir": "./dist/",
+    "removeComments": true,
+    "noImplicitAny": false,
+    "preserveConstEnums": true,
+    "sourceMap": true,
     "esModuleInterop": true,
-    "lib": ["es2015", "dom"]
+    "declaration": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "lib": [
+      "es2015",
+      "dom"
+    ]
   },
   "include": ["src"],
-  "exclude": ["src/__tests__"]
+  "exclude": [
+    "node_modules",
+    "src/__tests__"
+  ]
 }
