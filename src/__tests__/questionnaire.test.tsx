@@ -3,14 +3,14 @@ import * as React from "react";
 import {strictEqual} from "assert";
 import {fireEvent, render, RenderResult} from "@testing-library/react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {ContinuousText, ContinuousTextProps} from "../continuoustext";
+import {Questionnaire, QuestionnaireProps} from "../questionnaire";
 import {fake} from "@miqro/core";
 
-const renderComponent = (props: ContinuousTextProps): RenderResult => {
-  return render(<ContinuousText {...props} />);
+const renderComponent = (props: QuestionnaireProps): RenderResult => {
+  return render(<Questionnaire {...props} />);
 };
 
-describe("<ContinuousText />", () => {
+describe("<Questionare />", () => {
   test("happy path", async () => {
     const fakeOnError = fake((e: Error) => {
       console.error(e);
@@ -35,7 +35,7 @@ describe("<ContinuousText />", () => {
     });
     const {findByText, findByTestId} = renderComponent({
       onError: fakeOnError,
-      scriptGenerator: fakeGenerator
+      questionnaireGenerator: fakeGenerator
     });
     strictEqual(!!(await findByText("what is your favorite color ?")), true);
     const colorOption = await findByTestId(`input-select-what is your favorite color ?`);

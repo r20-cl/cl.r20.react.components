@@ -2,30 +2,30 @@ import * as React from 'react';
 import {v4} from "uuid";
 import {SimpleMap} from "@miqro/core";
 
-export interface ScriptState extends SimpleMap<any> {
+export interface QuestionnaireStepState extends SimpleMap<any> {
   step: number;
-  steps: readonly ScriptStep[];
+  steps: readonly QuestionnaireStep[];
   options: readonly string[];
 }
 
-export interface ScriptStep {
+export interface QuestionnaireStep {
   text: string;
-  scriptState?: Partial<ScriptState>;
+  state?: Partial<QuestionnaireStepState>;
   options?: string[];
 }
 
-export interface ContinuousTextProps {
+export interface QuestionnaireProps {
   onError?: (e: Error) => void;
-  onResult?: (state: ScriptState) => void;
-  scriptGenerator: (scriptState: ScriptState) => Promise<ScriptStep>;
+  onResult?: (state: QuestionnaireStepState) => void;
+  questionnaireGenerator: (scriptState: QuestionnaireStepState) => Promise<QuestionnaireStep>;
 }
 
-export interface ContinuousTextState {
-  currentState: ScriptState;
+export interface QuestionnaireState {
+  currentState: QuestionnaireStepState;
 }
 
-export class ContinuousText extends React.Component<ContinuousTextProps, ContinuousTextState> {
-  constructor(props: ContinuousTextProps) {
+export class Questionnaire extends React.Component<QuestionnaireProps, QuestionnaireState> {
+  constructor(props: QuestionnaireProps) {
     super(props);
     this.state = {
       currentState: {
@@ -34,7 +34,7 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
         steps: []
       }
     };
-    this.renderStep = this.renderStep.bind(this);
+    this.renderQuestion = this.renderQuestion.bind(this);
     this.nextStep = this.nextStep.bind(this);
   }
 
@@ -47,7 +47,7 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
       try {
         const step = this.state.currentState.step;
         const steps = this.state.currentState.steps;
-        const result: ScriptStep = await this.props.scriptGenerator(this.state.currentState);
+        const result: QuestionnaireStep = await this.props.questionnaireGenerator(this.state.currentState);
         this.setState({
           currentState: {
             ...this.state.currentState,
@@ -89,7 +89,7 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
     }
   }
 
-  renderStep(stepNumber: number, step: ScriptStep): JSX.Element {
+  renderQuestion(stepNumber: number, step: QuestionnaireStep): JSX.Element {
     return (
       <div key={v4()}>
         <p key={v4()}>{step.text}</p>
@@ -119,7 +119,7 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
     return (
       <>
         {
-          this.state.currentState.steps.map((step, index) => this.renderStep(index + 1, step))
+          this.state.currentState.steps.map((step, index) => this.renderQuestion(index + 1, step))
         }
       </>
     );
