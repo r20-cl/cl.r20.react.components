@@ -75,7 +75,7 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
         {step.options && stepNumber === this.state.currentState.step &&
         <select
           key={v4()}
-          defaultValue={"select one"}
+          defaultValue={""}
           data-testid={`input-select-${step.text}`}
           onChange={event => {
             this.setState({
@@ -89,7 +89,7 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
             [
               <option
                 key={v4()}
-                value={"select one"}/>
+                value={""}/>
             ].concat(step.options.map(option => <option key={v4()} value={option}>{option}</option>))
           }
         </select>
