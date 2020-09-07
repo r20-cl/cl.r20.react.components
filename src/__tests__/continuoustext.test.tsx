@@ -1,0 +1,60 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as React from "react";
+import {strictEqual} from "assert";
+import {fireEvent, render, RenderResult} from "@testing-library/react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import {ContinuousText, ContinuousTextProps} from "../continuoustext";
+import {fake} from "@miqro/core";
+
+const renderComponent = (props: ContinuousTextProps): RenderResult => {
+  return render(<ContinuousText {...props} />);
+};
+
+describe("<ContinuousText />", () => {
+  test("happy path", async () => {
+    const fakeOnError = fake((e: Error) => {
+
+    });
+    const fakeGenerator = fake(async (state) => {
+      switch (state.step) {
+        case 0:
+          return {
+            text: "what is your favorite color ?",
+            options: ["red", "green", "blue"]
+          }
+        case 1:
+          return {
+            text: "what is your favorite os ?",
+            options: ["GNU/Linux", "MacOS", "windoze"]
+          }
+        case 2:
+          return {
+            text: "thanks"
+          }
+      }
+    });
+    const {findByText, findByTestId} = renderComponent({
+      onError: fakeOnError,
+      scriptGenerator: fakeGenerator
+    });
+    strictEqual(!!(await findByText("what is your favorite color ?")), true);
+    const colorOption = await findByTestId(`input-select-what is your favorite color ?`);
+    try {
+      await findByText("what is your favorite os ?");
+      strictEqual(true, false, "bad state");
+    } catch (e) {
+      strictEqual(e.message.indexOf("Unable to find an element"), 0, "bad error");
+    }
+    fireEvent.change(colorOption, {
+      target: {value: 'green'}
+    });
+    const myColorP = await findByTestId(`input-select-result-what is your favorite color ?`);
+    expect(myColorP).toHaveTextContent("green");
+    strictEqual(!!(await findByText("what is your favorite os ?")), true);
+    const osOption = await findByTestId(`input-select-what is your favorite os ?`);
+    fireEvent.change(osOption, {
+      target: {value: "GNU/Linux"}
+    });
+    strictEqual(!!(await findByText("thanks")), true);
+  });
+});

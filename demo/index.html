@@ -14,7 +14,34 @@
   window.onload = function () {
     const bundle = require("bundle");
     const HelloWorld = bundle.HelloWorld;
-    ReactDOM.render(<HelloWorld color="red"/>, document.getElementById('root'))
+    const ContinuousText = bundle.ContinuousText;
+    //ReactDOM.render(<HelloWorld color="red"/>, document.getElementById('root'))
+    ReactDOM.render(<ContinuousText scriptGenerator={async (state) => {
+      switch (state.step) {
+        case 0:
+          return {
+            text: "what is your favorite color ?",
+            options: ["red", "green", "blue"]
+          }
+        case 1:
+          return {
+            text: "what is your favorite os ?",
+            options: ["GNU/Linux", "MacOS", "windoze"]
+          }
+        default:
+          if (state.options[state.options.length - 1] !== "GNU/Linux") {
+            return {
+              text: "not really, what is your favorite os ?",
+              options: ["GNU/Linux", "MacOS", "windoze"]
+            }
+          } else {
+            return {
+              text: "thanks"
+            }
+          }
+
+      }
+    }}/>, document.getElementById('root'));
   }
 </script>
 </body>
