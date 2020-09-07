@@ -14,9 +14,9 @@
   window.onload = function () {
     const bundle = require("bundle");
     const HelloWorld = bundle.HelloWorld;
-    const ContinuousText = bundle.ContinuousText;
+    const Questionnaire = bundle.Questionnaire;
     //ReactDOM.render(<HelloWorld color="red"/>, document.getElementById('root'))
-    ReactDOM.render(<ContinuousText scriptGenerator={async (state) => {
+    ReactDOM.render(<Questionnaire questionnaireGenerator={async (state) => {
       switch (state.step) {
         case 0:
           return {
@@ -26,7 +26,7 @@
         case 1:
           return {
             text: "what is your favorite os ?",
-            options: ["GNU/Linux", "MacOS", "windoze"]
+            options: ["MacOS", "windoze"]
           }
         default:
           if (state.options[state.options.length - 1] !== "GNU/Linux") {
