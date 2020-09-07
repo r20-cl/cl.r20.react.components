@@ -31,7 +31,7 @@
         default:
           if (state.options[state.options.length - 1] !== "GNU/Linux") {
             return {
-              text: "not really, what is your favorite os ?",
+              text: `${state.options[state.options.length - 1]} ??? really ?? no way!!. Lets try again, what is your favorite os ?`,
               options: state.step > 2 ? ["GNU/Linux"] : ["MacOS", "windoze"].filter(val => state.options.indexOf(val) === -1)
             }
           } else {
