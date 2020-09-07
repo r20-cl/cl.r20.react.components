@@ -63,8 +63,8 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
           if (this.props.onError) {
             this.props.onError(e);
           }
-        } catch (e) {
-          console.error(e);
+        } catch (e2) {
+          console.error(e2);
         }
       }
     }
