@@ -42,30 +42,42 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
     this.nextStep();
   }
 
-  nextStep(): void {
-    (async () => {
-      const step = this.state.currentState.step;
-      const steps = this.state.currentState.steps;
-      console.log("running script generator");
-      const result: ScriptStep = await this.props.scriptGenerator(this.state.currentState);
-      console.log(`running script generator result [${inspect(result)}]`);
-      this.setState({
-        currentState: {
-          ...this.state.currentState,
-          step: step + 1,
-          steps: steps.concat([result])
-        }
-      });
-    })().catch((e) => {
-      console.error(e);
-      if (this.props.onError) {
+  nextStep(option?: string): void {
+    const goNext = async () => {
+      try {
+        const step = this.state.currentState.step;
+        const steps = this.state.currentState.steps;
+        console.log("running script generator");
+        const result: ScriptStep = await this.props.scriptGenerator(this.state.currentState);
+        console.log(`running script generator result [${inspect(result)}]`);
+        this.setState({
+          currentState: {
+            ...this.state.currentState,
+            step: step + 1,
+            steps: steps.concat([result])
+          }
+        });
+      } catch (e) {
+        console.error(e);
         try {
-          this.props.onError(e);
+          if (this.props.onError) {
+            this.props.onError(e);
+          }
         } catch (e) {
           console.error(e);
         }
       }
-    });
+    }
+    if (option) {
+      this.setState({
+        currentState: {
+          ...this.state.currentState,
+          options: this.state.currentState.options.concat([option])
+        }
+      }, goNext);
+    } else {
+      goNext();
+    }
   }
 
   renderStep(stepNumber: number, step: ScriptStep): JSX.Element {
@@ -77,14 +89,7 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
           key={v4()}
           defaultValue={""}
           data-testid={`input-select-${step.text}`}
-          onChange={event => {
-            this.setState({
-              currentState: {
-                ...this.state.currentState,
-                options: this.state.currentState.options.concat([event.target.value])
-              }
-            }, this.nextStep);
-          }}>
+          onChange={event => this.nextStep(event.target.value)}>
           {
             [
               <option
@@ -103,11 +108,11 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
 
   render(): JSX.Element {
     return (
-      <div>
+      <>
         {
           this.state.currentState.steps.map((step, index) => this.renderStep(index + 1, step))
         }
-      </div>
+      </>
     );
   }
 }
