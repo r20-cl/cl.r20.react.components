@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {inspect} from "util";
 import {v4} from "uuid";
 import {SimpleMap} from "@miqro/core";
 
@@ -17,6 +16,7 @@ export interface ScriptStep {
 
 export interface ContinuousTextProps {
   onError?: (e: Error) => void;
+  onResult?: (state: ScriptState) => void;
   scriptGenerator: (scriptState: ScriptState) => Promise<ScriptStep>;
 }
 
@@ -47,14 +47,23 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
       try {
         const step = this.state.currentState.step;
         const steps = this.state.currentState.steps;
-        console.log("running script generator");
         const result: ScriptStep = await this.props.scriptGenerator(this.state.currentState);
-        console.log(`running script generator result [${inspect(result)}]`);
         this.setState({
           currentState: {
             ...this.state.currentState,
             step: step + 1,
             steps: steps.concat([result])
+          }
+        }, () => {
+          // Script ended
+          if (!result.options || result.options.length === 0) {
+            if (this.props.onResult) {
+              try {
+                this.props.onResult(this.state.currentState);
+              } catch (e) {
+                console.error(e);
+              }
+            }
           }
         });
       } catch (e) {
