@@ -89,7 +89,7 @@ export class ContinuousText extends React.Component<ContinuousTextProps, Continu
             [
               <option
                 key={v4()}
-                value={"select one"}></option>
+                value={"select one"}/>
             ].concat(step.options.map(option => <option key={v4()} value={option}>{option}</option>))
           }
         </select>
