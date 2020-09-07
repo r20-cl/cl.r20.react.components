@@ -13,7 +13,7 @@ const renderComponent = (props: ContinuousTextProps): RenderResult => {
 describe("<ContinuousText />", () => {
   test("happy path", async () => {
     const fakeOnError = fake((e: Error) => {
-
+      console.error(e);
     });
     const fakeGenerator = fake(async (state) => {
       switch (state.step) {
@@ -56,5 +56,7 @@ describe("<ContinuousText />", () => {
       target: {value: "GNU/Linux"}
     });
     strictEqual(!!(await findByText("thanks")), true);
+    strictEqual(fakeOnError.callCount, 0);
+    strictEqual(fakeGenerator.callCount, 3);
   });
 });
