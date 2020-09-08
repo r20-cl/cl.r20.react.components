@@ -138,7 +138,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
         {step.options && stepNumber !== this.state.currentState.step &&
         <p data-testid={`input-select-result-${step.text}`}>{this.state.currentState.options[stepNumber - 1]}</p>
         }
-        {stepNumber !== this.state.currentState.step && step.textInput &&
+        {stepNumber !== this.state.currentState.step && step.textInput && this.state.currentState.options[stepNumber - 1] &&
         this.state.currentState.options[stepNumber - 1].split("\n").map(line => <p
           data-testid={`input-text-result-${step.text}`} key={v4()}>{line}</p>)
         }
