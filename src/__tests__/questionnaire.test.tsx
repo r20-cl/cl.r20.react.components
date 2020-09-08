@@ -29,6 +29,11 @@ describe("<Questionare />", () => {
           }
         case 2:
           return {
+            text: "what is your name",
+            textInput: true
+          }
+        case 3:
+          return {
             text: "thanks"
           }
       }
@@ -55,8 +60,17 @@ describe("<Questionare />", () => {
     fireEvent.change(osOption, {
       target: {value: "GNU/Linux"}
     });
+
+    const nameInput = await findByTestId(`input-text-what is your name`);
+    fireEvent.change(nameInput, {
+      target: {value: "bla"}
+    });
+
+    const saveInput = await findByTestId(`input-text-save-what is your name`);
+    fireEvent.click(saveInput);
+
     strictEqual(!!(await findByText("thanks")), true);
     strictEqual(fakeOnError.callCount, 0);
-    strictEqual(fakeGenerator.callCount, 3);
+    strictEqual(fakeGenerator.callCount, 4);
   });
 });

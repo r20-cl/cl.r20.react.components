@@ -112,17 +112,22 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
           }
         </select>
         }
-        {step.options && stepNumber === this.state.currentState.step && step.textInput &&
+        {stepNumber === this.state.currentState.step && step.textInput &&
         <>
-          <input type="text" onChange={event => {
+          <input
+            data-testid={`input-text-${step.text}`}
+            type="text" onChange={event => {
             this.setState({
               currentInput: event.target.value
             });
           }}/>
-          <button onClick={event=>{
+          <button
+            data-testid={`input-text-save-${step.text}`}
+            onClick={event => {
             this.nextStep(this.state.currentInput);
           }
-          }>guardar</button>
+          }>save
+          </button>
         </>
         }
         {step.options && stepNumber !== this.state.currentState.step &&
