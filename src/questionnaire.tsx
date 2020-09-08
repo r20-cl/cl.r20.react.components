@@ -114,7 +114,9 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
         }
         {stepNumber === this.state.currentState.step && step.textInput &&
         <>
-          <textarea
+          <input
+            key={`input-text-${step.text}`} // must be fixed for not to lose focus
+            autoFocus={true}
             data-testid={`input-text-${step.text}`}
             value={this.state.currentInput}
             onChange={event => {

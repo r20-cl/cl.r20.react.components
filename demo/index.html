@@ -26,12 +26,17 @@
           }
         case 1:
           return {
+            text: "what is your name ?",
+            textInput: true
+          }
+        case 2:
+          return {
             text: "what is your favorite os ?",
             options: badOSList
           }
         default:
           if (state.options[state.options.length - 1] !== "GNU/Linux") {
-            return state.step <= 3 ? {
+            return state.step <= 4 ? {
               text: `${state.options[state.options.length - 1]} ??? really ?? no way!!. Lets try again, what is your favorite os ?`,
               options: badOSList
             }: {
