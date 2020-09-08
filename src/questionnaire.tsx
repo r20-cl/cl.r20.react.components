@@ -114,9 +114,9 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
         }
         {stepNumber === this.state.currentState.step && step.textInput &&
         <>
-          <input
+          <textarea
             data-testid={`input-text-${step.text}`}
-            type="text" onChange={event => {
+            onChange={event => {
             this.setState({
               currentInput: event.target.value
             });
