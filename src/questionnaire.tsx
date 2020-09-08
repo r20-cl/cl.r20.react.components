@@ -10,6 +10,8 @@ export interface QuestionnaireStepState extends SimpleMap<any> {
 
 export interface QuestionnaireStep {
   text: string;
+  questionClassName?: string;
+  optionClassName?: string;
   state?: Partial<QuestionnaireStepState>;
   options?: string[];
   textInput?: boolean;
@@ -101,7 +103,10 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
       <div
         key={`question-step-${stepId}`}// must be fixed for text input not to lose focus
       >
-        {step.text.split("\n").map(line => <p key={v4()}>{line}</p>)}
+        {step.text.split("\n").map(line =>
+          <p
+            className={step.questionClassName ? step.questionClassName : ""}
+            key={v4()}>{line}</p>)}
         {step.options && stepNumber === this.state.currentState.step && !step.textInput &&
         <select
           key={v4()}
@@ -141,12 +146,14 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
         }
         {step.options && stepNumber !== this.state.currentState.step &&
         <p
+          className={step.optionClassName ? step.optionClassName : ""}
           key={v4()}
           data-testid={`input-select-result-${step.text}`}>{this.state.currentState.options[stepNumber - 1]}</p>
         }
         {stepNumber !== this.state.currentState.step && step.textInput && this.state.currentState.options[stepNumber - 1] &&
         this.state.currentState.options[stepNumber - 1].split("\n").map(line =>
           <p
+            className={step.optionClassName ? step.optionClassName : ""}
             data-testid={`input-text-result-${step.text}`}
             key={v4()}>{line}</p>)
         }
