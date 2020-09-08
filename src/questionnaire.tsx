@@ -83,7 +83,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
         }
       }
     }
-    if (option) {
+    if (option !== undefined) {
       this.setState({
         currentState: {
           ...this.state.currentState,
