@@ -98,7 +98,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
       <div
         key={`question-step-${step.text}`}// must be fixed for text input not to lose focus
       >
-        <p key={v4()}>{step.text}</p>
+        {step.text.split("\n").map(line => <p key={v4()}>{line}</p>)}
         {step.options && stepNumber === this.state.currentState.step && !step.textInput &&
         <select
           key={v4()}
@@ -122,16 +122,16 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
             data-testid={`input-text-${step.text}`}
             value={this.state.currentInput}
             onChange={event => {
-            this.setState({
-              currentInput: event.target.value
-            });
-          }}/>
+              this.setState({
+                currentInput: event.target.value
+              });
+            }}/>
           <button
             data-testid={`input-text-save-${step.text}`}
             onClick={event => {
-            this.nextStep(this.state.currentInput);
-          }
-          }>save
+              this.nextStep(this.state.currentInput);
+            }
+            }>save
           </button>
         </>
         }
@@ -139,7 +139,8 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
         <p data-testid={`input-select-result-${step.text}`}>{this.state.currentState.options[stepNumber - 1]}</p>
         }
         {stepNumber !== this.state.currentState.step && step.textInput &&
-        <p data-testid={`input-text-result-${step.text}`}>{this.state.currentState.options[stepNumber - 1]}</p>
+        this.state.currentState.options[stepNumber - 1].split("\n").map(line => <p
+          data-testid={`input-text-result-${step.text}`} key={v4()}>{line}</p>)
         }
       </div>
     );
