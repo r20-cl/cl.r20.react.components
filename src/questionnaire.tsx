@@ -95,7 +95,9 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
 
   renderQuestion(stepNumber: number, step: QuestionnaireStep): JSX.Element {
     return (
-      <div key={v4()}>
+      <div
+        key={`question-step-${step.text}`}// must be fixed for text input not to lose focus
+      >
         <p key={v4()}>{step.text}</p>
         {step.options && stepNumber === this.state.currentState.step && !step.textInput &&
         <select
@@ -114,7 +116,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
         }
         {stepNumber === this.state.currentState.step && step.textInput &&
         <>
-          <input
+          <textarea
             key={`input-text-${step.text}`} // must be fixed for not to lose focus
             autoFocus={true}
             data-testid={`input-text-${step.text}`}
