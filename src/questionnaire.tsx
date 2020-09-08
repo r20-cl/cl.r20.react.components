@@ -12,6 +12,7 @@ export interface QuestionnaireStep {
   text: string;
   state?: Partial<QuestionnaireStepState>;
   options?: string[];
+  textInput?: boolean;
 }
 
 export interface QuestionnaireProps {
@@ -22,12 +23,14 @@ export interface QuestionnaireProps {
 
 export interface QuestionnaireState {
   currentState: QuestionnaireStepState;
+  currentInput: string;
 }
 
 export class Questionnaire extends React.Component<QuestionnaireProps, QuestionnaireState> {
   constructor(props: QuestionnaireProps) {
     super(props);
     this.state = {
+      currentInput: "",
       currentState: {
         step: 0,
         options: [],
@@ -49,6 +52,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
         const steps = this.state.currentState.steps;
         const result: QuestionnaireStep = await this.props.questionnaireGenerator(this.state.currentState);
         this.setState({
+          currentInput: "",
           currentState: {
             ...this.state.currentState,
             step: step + 1,
@@ -56,7 +60,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
           }
         }, () => {
           // Script ended
-          if (!result.options || result.options.length === 0) {
+          if ((!result.options || result.options.length === 0) && !result.textInput) {
             if (this.props.onResult) {
               try {
                 this.props.onResult(this.state.currentState);
@@ -93,7 +97,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
     return (
       <div key={v4()}>
         <p key={v4()}>{step.text}</p>
-        {step.options && stepNumber === this.state.currentState.step &&
+        {step.options && stepNumber === this.state.currentState.step && !step.textInput &&
         <select
           key={v4()}
           defaultValue={""}
@@ -107,6 +111,19 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
             ].concat(step.options.map(option => <option key={v4()} value={option}>{option}</option>))
           }
         </select>
+        }
+        {step.options && stepNumber === this.state.currentState.step && step.textInput &&
+        <>
+          <input type="text" onChange={event => {
+            this.setState({
+              currentInput: event.target.value
+            });
+          }}/>
+          <button onClick={event=>{
+            this.nextStep(this.state.currentInput);
+          }
+          }>guardar</button>
+        </>
         }
         {step.options && stepNumber !== this.state.currentState.step &&
         <p data-testid={`input-select-result-${step.text}`}>{this.state.currentState.options[stepNumber - 1]}</p>
