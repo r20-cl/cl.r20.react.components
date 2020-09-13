@@ -19,7 +19,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@miqro/core": "^0.8.2",
+    "@miqro/core": "^0.8.3",
+    "@miqro/modelhandlers": "^0.8.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^10.4.9",
     "@types/jest": "^26.0.12",
@@ -29,6 +30,7 @@
     "@typescript-eslint/parser": "^3.9.1",
     "browserify": "^16.5.2",
     "eslint": "^7.7.0",
+    "express": "^4.17.1",
     "jest": "^26.4.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
