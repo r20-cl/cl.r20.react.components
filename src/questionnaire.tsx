@@ -137,7 +137,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
           <button
             key={v4()}
             data-testid={`input-text-save-${step.text}`}
-            onClick={event => {
+            onClick={() => {
               this.nextStep(this.state.currentInput);
             }
             }>save
