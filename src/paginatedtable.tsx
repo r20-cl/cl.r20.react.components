@@ -122,8 +122,12 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   protected renderRow(columns: string[], row: any): JSX.Element {
     return (
-      <tr key={v4()} className={this.props.table.rowsTRClassname}>
-        {columns.map(columnName => <td key={v4()} className={this.props.table.rowsClassname}>{row[columnName]}</td>)}
+      <tr
+        key={v4()}
+        className={this.props.table.rowsTRClassname}>
+        {columns.map(columnName => <td
+          key={v4()}
+          className={this.props.table.rowsClassname}>{`${row[columnName]}`}</td>)}
       </tr>
     )
   }
