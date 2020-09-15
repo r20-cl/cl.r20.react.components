@@ -35,10 +35,10 @@ export interface PaginatedEndpointTableState {
   pageCount: number;
 }
 
-export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProps, PaginatedEndpointTableState> {
+export class PaginatedEndpointTable<T extends PaginatedEndpointTableProps = PaginatedEndpointTableProps> extends Component<T, PaginatedEndpointTableState> {
   private unMounted = false;
 
-  constructor(props: PaginatedEndpointTableProps) {
+  constructor(props: T) {
     super(props);
     this.state = {
       rows: [],
