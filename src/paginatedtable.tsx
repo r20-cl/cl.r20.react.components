@@ -72,7 +72,8 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
         headers: this.props.endpoint.headers,
         method: "GET"
       });
-      if (response.data.result && response.data.result.rows) {
+      const result = response.data.result && response.data.result.rows ? response.data.result : response.data;
+      if (result && result.rows && result.count) {
         if (!this.unMounted) {
           this.setState({
             rows: response.data.result.rows,
