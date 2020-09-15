@@ -35,7 +35,7 @@ export interface PaginatedEndpointTableState {
   pageCount: number;
 }
 
-export class PaginatedEndpointTable<T extends PaginatedEndpointTableProps = PaginatedEndpointTableProps> extends Component<T, PaginatedEndpointTableState> {
+export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProps> = PaginatedEndpointTableProps> extends Component<T, PaginatedEndpointTableState> {
   private unMounted = false;
 
   constructor(props: T) {
@@ -48,7 +48,7 @@ export class PaginatedEndpointTable<T extends PaginatedEndpointTableProps = Pagi
     this.updatePage = this.updatePage.bind(this);
   }
 
-  componentDidUpdate(prevProps: PaginatedEndpointTableProps): void {
+  componentDidUpdate(prevProps: Partial<PaginatedEndpointTableProps>): void {
     if (prevProps.table.offset !== this.props.table.offset) {
       this.updatePage();
     }
