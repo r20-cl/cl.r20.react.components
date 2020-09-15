@@ -61,13 +61,16 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
   protected updatePage(): void {
     (async () => {
       const response = await request({
-        url: `${this.props.endpoint.endpoint}?pagination=${JSON.stringify({
+        url: `${this.props.endpoint.endpoint}?pagination=${JSON.stringify(this.props.search.searchQuery !== "" ? {
           limit: this.props.table.limit,
           offset: this.props.table.offset,
           search: {
             columns: this.props.search.columns,
             query: this.props.search.searchQuery
           }
+        } : {
+          limit: this.props.table.limit,
+          offset: this.props.table.offset
         })}`,
         headers: this.props.endpoint.headers,
         method: "GET"
