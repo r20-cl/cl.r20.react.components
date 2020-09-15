@@ -76,9 +76,9 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
       if (result && result.rows instanceof Array && result.count !== undefined) {
         if (!this.unMounted) {
           this.setState({
-            rows: response.data.result.rows,
+            rows: result.rows,
             renderedOffset: this.props.table.offset,
-            pageCount: Math.ceil(response.data.result.count / this.props.table.limit)
+            pageCount: Math.ceil(result.count / this.props.table.limit)
           }, () => {
             if (this.props.onPageData) {
               try {
