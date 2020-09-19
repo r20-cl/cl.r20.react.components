@@ -33,6 +33,7 @@ export interface PaginatedEndpointTableState {
   rows: any[];
   renderedOffset?: number;
   pageCount: number;
+  loading: boolean;
 }
 
 export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProps> = PaginatedEndpointTableProps> extends Component<T, PaginatedEndpointTableState> {
@@ -42,6 +43,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
     super(props);
     this.state = {
       rows: [],
+      loading: true,
       renderedOffset: undefined,
       pageCount: 0
     };
@@ -59,52 +61,57 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
   }
 
   protected updatePage(): void {
-    (async () => {
-      const response = await request({
-        url: `${this.props.endpoint.endpoint}?pagination=${JSON.stringify(this.props.search.searchQuery !== "" ? {
-          limit: this.props.table.limit,
-          offset: this.props.table.offset,
-          search: {
-            columns: this.props.search.columns,
-            query: this.props.search.searchQuery
-          }
-        } : {
-          limit: this.props.table.limit,
-          offset: this.props.table.offset
-        })}`,
-        headers: this.props.endpoint.headers,
-        method: "GET"
-      });
-      const result = response.data.result && response.data.result.rows ? response.data.result : response.data;
-      if (result && result.rows instanceof Array && result.count !== undefined) {
-        if (!this.unMounted) {
-          this.setState({
-            rows: result.rows,
-            renderedOffset: this.props.table.offset,
-            pageCount: Math.ceil(result.count / this.props.table.limit)
-          }, () => {
-            if (this.props.onPageData) {
-              try {
-                this.props.onPageData(response);
-              } catch (e) {
-                console.error(e);
-              }
+    this.setState({
+      loading: true
+    }, () => {
+      (async () => {
+        const response = await request({
+          url: `${this.props.endpoint.endpoint}?pagination=${JSON.stringify(this.props.search.searchQuery !== "" ? {
+            limit: this.props.table.limit,
+            offset: this.props.table.offset,
+            search: {
+              columns: this.props.search.columns,
+              query: this.props.search.searchQuery
             }
-          });
+          } : {
+            limit: this.props.table.limit,
+            offset: this.props.table.offset
+          })}`,
+          headers: this.props.endpoint.headers,
+          method: "GET"
+        });
+        const result = response.data.result && response.data.result.rows ? response.data.result : response.data;
+        if (result && result.rows instanceof Array && result.count !== undefined) {
+          if (!this.unMounted) {
+            this.setState({
+              rows: result.rows,
+              loading: false,
+              renderedOffset: this.props.table.offset,
+              pageCount: Math.ceil(result.count / this.props.table.limit)
+            }, () => {
+              if (this.props.onPageData) {
+                try {
+                  this.props.onPageData(response);
+                } catch (e) {
+                  console.error(e);
+                }
+              }
+            });
+          }
+        } else {
+          throw new ParseOptionsError("invalid endpoint data");
         }
-      } else {
-        throw new ParseOptionsError("invalid endpoint data");
-      }
-    })().catch((e) => {
-      console.error(e);
-      if (this.props.onError) {
-        try {
-          this.props.onError(e);
-        } catch (e) {
-          console.error(e);
+      })().catch((e) => {
+        console.error(e);
+        if (this.props.onError) {
+          try {
+            this.props.onError(e);
+          } catch (e) {
+            console.error(e);
+          }
         }
-      }
-    });
+      });
+    })
   }
 
   componentWillUnmount(): void {
@@ -132,16 +139,31 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
     )
   }
 
+  protected renderLoading(): JSX.Element {
+    return (
+      <p>loading...</p>
+    )
+  }
+
   public render(): JSX.Element {
     return (
-      <table className={this.props.table.className}>
-        <thead className={this.props.table.headClassname}>
-        {this.renderColumns(this.props.table.columns)}
-        </thead>
-        <tbody className={this.props.table.bodyClassname}>
-        {this.state.rows.map(val => this.renderRow(this.props.table.columns, val))}
-        </tbody>
-      </table>
+      <>
+        {
+          !this.state.loading &&
+          <table className={this.props.table.className}>
+            <thead className={this.props.table.headClassname}>
+            {this.renderColumns(this.props.table.columns)}
+            </thead>
+            <tbody className={this.props.table.bodyClassname}>
+            {this.state.rows.map(val => this.renderRow(this.props.table.columns, val))}
+            </tbody>
+          </table>
+        }
+        {
+          this.state.loading &&
+          this.renderLoading()
+        }
+      </>
     );
   }
 }
