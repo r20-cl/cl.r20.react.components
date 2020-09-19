@@ -51,7 +51,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
   }
 
   componentDidUpdate(prevProps: Partial<PaginatedEndpointTableProps>): void {
-    if (prevProps.table.offset !== this.props.table.offset) {
+    if (prevProps.table.offset !== this.props.table.offset || prevProps.search.searchQuery !== this.props.search.searchQuery) {
       this.updatePage();
     }
   }
