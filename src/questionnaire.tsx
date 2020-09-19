@@ -33,6 +33,8 @@ export interface QuestionnaireState {
 }
 
 export class Questionnaire extends React.Component<QuestionnaireProps, QuestionnaireState> {
+  private focusRef: React.RefObject<any>;
+
   constructor(props: QuestionnaireProps) {
     super(props);
     this.state = {
@@ -44,6 +46,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
         steps: []
       }
     };
+    this.focusRef = React.createRef();
     this.renderQuestion = this.renderQuestion.bind(this);
     this.nextStep = this.nextStep.bind(this);
   }
@@ -75,6 +78,9 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
                 console.error(e);
               }
             }
+          }
+          if (this.focusRef && this.focusRef.current) {
+            this.focusRef.current.focus();
           }
         });
       } catch (e) {
@@ -115,6 +121,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
         {step.options && stepNumber === this.state.currentState.step && !step.textInput &&
         <select
           key={v4()}
+          ref={this.focusRef}
           defaultValue={""}
           data-testid={`input-select-${step.text}`}
           onChange={event => this.nextStep(event.target.value)}>
@@ -131,7 +138,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
         <>
           <textarea
             key={`input-text-${stepId}`} // must be fixed for not to lose focus
-            autoFocus={true}
+            ref={this.focusRef}
             data-testid={`input-text-${step.text}`}
             value={this.state.currentInput}
             onChange={event => {
