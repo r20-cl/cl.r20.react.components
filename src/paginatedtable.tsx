@@ -4,6 +4,9 @@ import {v4} from "uuid";
 import {ParseOptionsError, request, RequestResponse, SimpleMap} from "@miqro/core";
 
 export interface PaginatedEndpointTableProps {
+  renderColumns?: (columns: string[]) => JSX.Element;
+  renderRow?: (columns: string[], row: any) => JSX.Element;
+  renderLoading?: () => JSX.Element;
   table: {
     bodyClassname?: string;
     headClassname?: string;
@@ -119,7 +122,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
   }
 
   protected renderColumns(columns: string[]): JSX.Element {
-    return (
+    return this.props.renderColumns ? this.props.renderColumns(columns) : (
       <tr key={v4()} className={this.props.table.columnsClassname}>
         {columns.map(name => <th key={v4()} className={this.props.table.columnsClassname}>{name}</th>)}
       </tr>
@@ -128,7 +131,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   protected renderRow(columns: string[], row: any): JSX.Element {
-    return (
+    return this.props.renderRow ? this.props.renderRow(columns, row) : (
       <tr
         key={v4()}
         className={this.props.table.rowsTRClassname}>
@@ -140,7 +143,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
   }
 
   protected renderLoading(): JSX.Element {
-    return (
+    return this.props.renderLoading ? this.props.renderLoading() : (
       <p>loading...</p>
     )
   }
