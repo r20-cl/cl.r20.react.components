@@ -18,6 +18,8 @@ export interface QuestionnaireStep {
 }
 
 export interface QuestionnaireProps {
+  className: string;
+  questionClassName: string;
   onError?: (e: Error) => void;
   onResult?: (state: QuestionnaireStepState) => void;
   questionnaireGenerator: (scriptState: QuestionnaireStepState) => Promise<QuestionnaireStep>;
@@ -101,6 +103,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
     const stepId = `${this.state.questionnaireId}-${step.text}-${stepNumber}`; // this must be done for textarea not to lose focus
     return (
       <div
+        className={this.props.questionClassName ? this.props.questionClassName : ""}
         key={`question-step-${stepId}`}// must be fixed for text input not to lose focus
       >
         {step.text.split("\n").map(line =>
@@ -163,11 +166,11 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
 
   render(): JSX.Element {
     return (
-      <>
+      <div className={this.props.className}>
         {
           this.state.currentState.steps.map((step, index) => this.renderQuestion(index + 1, step))
         }
-      </>
+      </div>
     );
   }
 }
