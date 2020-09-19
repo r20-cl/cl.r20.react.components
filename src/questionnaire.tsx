@@ -18,8 +18,9 @@ export interface QuestionnaireStep {
 }
 
 export interface QuestionnaireProps {
-  className: string;
-  questionClassName: string;
+  className?: string;
+  style?: { [k: string]: string };
+  questionClassName?: string;
   onError?: (e: Error) => void;
   onResult?: (state: QuestionnaireStepState) => void;
   questionnaireGenerator: (scriptState: QuestionnaireStepState) => Promise<QuestionnaireStep>;
@@ -103,6 +104,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
     const stepId = `${this.state.questionnaireId}-${step.text}-${stepNumber}`; // this must be done for textarea not to lose focus
     return (
       <div
+        style={this.props.style}
         className={this.props.questionClassName ? this.props.questionClassName : ""}
         key={`question-step-${stepId}`}// must be fixed for text input not to lose focus
       >
