@@ -80,8 +80,8 @@ export const calculateWeeks = (now: Date): MinimalWeek[] => {
         for (let i = dayOfWeek - 2; i >= 0; i--) {
           currentWeek.days.push({
             active: false,
-            year: now.getFullYear(),
-            month: now.getMonth(),
+            year: lastDayOfPrevMonth.getFullYear(),
+            month: lastDayOfPrevMonth.getMonth(),
             week: currentWeek.number,
             date: lastDayOfPrevMonth.getDate() - i
           })
