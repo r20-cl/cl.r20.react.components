@@ -17,6 +17,7 @@ const cloneDateMonthFullYear = (date: number, now: Date): Date => {
 
 const getLastDayOfMonth = (now: Date): Date => {
   const firstDayOfNextMonth = cloneDateMonthFullYear(1, now);
+  firstDayOfNextMonth.setDate(1);
   if (now.getMonth() + 1 > 11) {
     // next year month case
     firstDayOfNextMonth.setMonth(0);
@@ -41,20 +42,23 @@ export const calculateWeeks = (now: Date): MinimalWeek[] => {
   const lastDayOfMonth = getLastDayOfMonth(firstDay);
   const weeks: MinimalWeek[] = [];
   let currentWeek: MinimalWeek = createEmptyWeek(0);
-  for (let dateNumber = 0; dateNumber < lastDayOfMonth.getDate() - 1; dateNumber++) {
-    const date = cloneDateMonthFullYear(dateNumber + 1, firstDay);
-    const isLast: boolean = dateNumber === lastDayOfMonth.getDate() - 2;
+  for (let dateNumber = 1; dateNumber <= lastDayOfMonth.getDate(); dateNumber++) {
+    const date = cloneDateMonthFullYear(dateNumber, firstDay);
+    date.setDate(dateNumber);
+    const isLast: boolean = dateNumber === lastDayOfMonth.getDate();
     const dayOfWeek = date.getDay();
     const firstDayOfNextMonth = cloneDateMonthFullYear(1, date);
+    firstDayOfNextMonth.setDate(1);
     if (firstDayOfNextMonth.getMonth() === 11) {
       firstDayOfNextMonth.setMonth(0);
       firstDayOfNextMonth.setFullYear(firstDayOfNextMonth.getFullYear() + 1);
     } else {
       firstDayOfNextMonth.setMonth(firstDayOfNextMonth.getMonth() + 1);
     }
-    if (dateNumber === 0 && dayOfWeek !== 1) {
+    if (dateNumber === 1 && dayOfWeek !== 1) {
       // first day not monday so fill with inactive days from prev month
       const firstDayOfPrevMonth = cloneDateMonthFullYear(1, date);
+      firstDayOfPrevMonth.setDate(1);
       if (firstDayOfPrevMonth.getMonth() === 0) {
         firstDayOfPrevMonth.setMonth(11);
         firstDayOfPrevMonth.setFullYear(firstDayOfPrevMonth.getFullYear() - 1);
