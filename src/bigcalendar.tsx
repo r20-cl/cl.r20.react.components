@@ -49,6 +49,7 @@ export class BigCalendar extends React.Component<BigCalendarProps, BigCalendarSt
       weeks: [],
       uuid: v4()
     }
+    this.updateBigCalendar = this.updateBigCalendar.bind(this);
   }
 
   public componentDidMount(): void {
@@ -72,11 +73,11 @@ export class BigCalendar extends React.Component<BigCalendarProps, BigCalendarSt
   protected renderDay(day: MinimalDay): JSX.Element {
     return this.props.renderDay ? this.props.renderDay(day) : (
       <div
-        data-testId={`big-calendar-container-week-${day.week}-day-${day.date}`}
+        data-testid={`big-calendar-container-week-${day.week}-day-${day.date}`}
         key={`${this.state.uuid}-week-${day.week}-day-${day.date}`}
         className={`${this.props.dayClassName ? this.props.dayClassName : DEFAULT_CLASSNAMES.dayClassName} ${day.active ? (this.props.activeDayClassName ? this.props.activeDayClassName : DEFAULT_CLASSNAMES.activeDayClassName) : ""}`}>
         <div
-          data-testId={`big-calendar-container-week-${day.week}-day-${day.date}-date`}
+          data-testid={`big-calendar-container-week-${day.week}-day-${day.date}-date`}
           key={`${this.state.uuid}-week-${day.week}-day-${day.date}-date`}
           className={`${this.props.dayDateClassName ? this.props.dayDateClassName : DEFAULT_CLASSNAMES.dayDateClassName}`}>{day.date}</div>
       </div>
@@ -97,7 +98,7 @@ export class BigCalendar extends React.Component<BigCalendarProps, BigCalendarSt
       <>
         {weeks.map((week, index) =>
           <div
-            data-testId={`big-calendar-container-week-${index}`}
+            data-testid={`big-calendar-container-week-${index}`}
             key={`${this.state.uuid}-week-${index}`}
             className={this.props.weekClassName ? this.props.weekClassName : DEFAULT_CLASSNAMES.weekClassName}>
             {this.renderWeekDays(week)}
@@ -109,7 +110,7 @@ export class BigCalendar extends React.Component<BigCalendarProps, BigCalendarSt
   public render(): JSX.Element {
     return (
       <div
-        data-testId={`big-calendar-container`}
+        data-testid={`big-calendar-container`}
         className={this.props.className ? this.props.className : DEFAULT_CLASSNAMES.className}>
         {this.renderWeeks(this.state.weeks)}
       </div>

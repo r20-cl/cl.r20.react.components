@@ -1,13 +1,13 @@
 import {MinimalWeek} from "./bigcalendar";
 
-export const setZeroHours = (now: Date): Date => {
+const setZeroHours = (now: Date): Date => {
   now.setHours(0);
   now.setMinutes(0);
   now.setSeconds(0);
   return now;
 };
 
-export const cloneDateMonthFullYear = (date: number, now: Date): Date => {
+const cloneDateMonthFullYear = (date: number, now: Date): Date => {
   const ret = new Date();
   ret.setFullYear(now.getFullYear());
   ret.setMonth(now.getMonth());
@@ -15,7 +15,7 @@ export const cloneDateMonthFullYear = (date: number, now: Date): Date => {
   return setZeroHours(ret);
 };
 
-export const getLastDayOfMonth = (now: Date): Date => {
+const getLastDayOfMonth = (now: Date): Date => {
   const firstDayOfNextMonth = cloneDateMonthFullYear(1, now);
   if (now.getMonth() + 1 > 11) {
     // next year month case
