@@ -71,6 +71,7 @@ export const calculateWeeks = (now: Date): MinimalWeek[] => {
           lastDayOfPrevMonth.getDate()
         ].forEach(date => currentWeek.days.push({
           active: false,
+          year: now.getFullYear(),
           month: now.getMonth(),
           week: currentWeek.number,
           date
@@ -79,6 +80,7 @@ export const calculateWeeks = (now: Date): MinimalWeek[] => {
         for (let i = dayOfWeek - 2; i >= 0; i--) {
           currentWeek.days.push({
             active: false,
+            year: now.getFullYear(),
             month: now.getMonth(),
             week: currentWeek.number,
             date: lastDayOfPrevMonth.getDate() - i
@@ -89,6 +91,7 @@ export const calculateWeeks = (now: Date): MinimalWeek[] => {
 
     currentWeek.days.push({
       active: true,
+      year: now.getFullYear(),
       month: now.getMonth(),
       week: currentWeek.number,
       date: date.getDate()
@@ -103,6 +106,7 @@ export const calculateWeeks = (now: Date): MinimalWeek[] => {
       for (let i = 0; i + dayOfWeek <= 6; i++) {
         currentWeek.days.push({
           active: false,
+          year: firstDayOfNextMonth.getFullYear(),
           month: firstDayOfNextMonth.getMonth(),
           week: currentWeek.number,
           date: firstDayOfNextMonth.getDate() + i

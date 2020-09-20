@@ -30,6 +30,7 @@ export interface MinimalDay {
   date: number;
   week: number;
   month: number;
+  year: number;
   active: boolean;
 }
 
