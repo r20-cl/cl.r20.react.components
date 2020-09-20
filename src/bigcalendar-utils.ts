@@ -21,6 +21,8 @@ const getLastDayOfMonth = (now: Date): Date => {
     // next year month case
     firstDayOfNextMonth.setMonth(0);
     firstDayOfNextMonth.setFullYear(now.getFullYear() + 1);
+  } else {
+    firstDayOfNextMonth.setMonth(now.getMonth() + 1);
   }
   const TWELVE_HOURS_MS = 1000 * 60 * 60 * 12;
   return setZeroHours(new Date(firstDayOfNextMonth.getTime() - TWELVE_HOURS_MS));
