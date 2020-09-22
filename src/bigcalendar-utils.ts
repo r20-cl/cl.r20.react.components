@@ -39,6 +39,7 @@ export const calculateWeeks = (now: Date): MinimalWeek[] => {
     };
   };
   const firstDay = cloneDateMonthFullYear(1, now);
+  firstDay.setDate(1);
   const lastDayOfMonth = getLastDayOfMonth(firstDay);
   const weeks: MinimalWeek[] = [];
   let currentWeek: MinimalWeek = createEmptyWeek(0);
