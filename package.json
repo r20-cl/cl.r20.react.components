@@ -7,7 +7,7 @@
   "scripts": {
     "prebrowserify": "npm run build",
     "browserify": "browserify -r ./dist/index.js:bundle -o demo/bundle.js",
-    "demo": "npm run browserify && cd demo/ && python -m http.server 8080",
+    "demo": "npm run browserify && cd demo/ && python3 -m http.server 9090",
     "prebuild": "rm -Rf dist/",
     "build": "tsc",
     "prepare": "npm run build",
