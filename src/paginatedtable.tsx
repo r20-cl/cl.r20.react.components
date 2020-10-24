@@ -6,7 +6,7 @@ import {ParseOptionsError, request, RequestResponse, SimpleMap} from "@miqro/cor
 export interface PaginatedEndpointTableProps {
   renderColumns?: (columns: string[]) => JSX.Element;
   renderRow?: (columns: string[], row: any) => JSX.Element;
-  renderLoading?: () => JSX.Element;
+  changeOnProgressbar: (status: string)=>void;
   table: {
     bodyClassname?: string;
     headClassname?: string;
@@ -142,13 +142,16 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
     )
   }
 
+  /*
   protected renderLoading(): JSX.Element {
     return this.props.renderLoading ? this.props.renderLoading() : (
       <p>loading...</p>
     )
   }
+  */
 
   public render(): JSX.Element {
+    this.state.loading?this.props.changeOnProgressbar("start"):this.props.changeOnProgressbar("stop");
     return (
       <>
         {
@@ -162,10 +165,10 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
             </tbody>
           </table>
         }
-        {
+        {/*
           this.state.loading &&
           this.renderLoading()
-        }
+        */}
       </>
     );
   }

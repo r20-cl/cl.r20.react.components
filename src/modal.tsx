@@ -87,7 +87,7 @@ export class Modal<T = boolean> extends Component<ModalProps<T>, ModalState> {
     }
 
     protected handleActionModal(): void {
-        // alert("se presiono el boton " + this.props.textButtonOk)
+        
         this.setState({
             showMessage: this.props.textBodyEnd ? this.props.textBodyEnd : "Gracias...",
             showButtonOk: false
@@ -167,7 +167,7 @@ export class Modal<T = boolean> extends Component<ModalProps<T>, ModalState> {
     }
 
     render(): JSX.Element {
-        console.log("state: " + this.state.isOpen + " props: " + this.props.isOpen)
+       
         if (this.props.children) {
             return (<>
                 {
