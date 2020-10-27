@@ -6,7 +6,7 @@ import {ParseOptionsError, request, RequestResponse, SimpleMap} from "@miqro/cor
 export interface PaginatedEndpointTableProps {
   renderColumns?: (columns: string[]) => JSX.Element;
   renderRow?: (columns: string[], row: any) => JSX.Element;
-  changeOnProgressbar: (status: string)=>void;
+  changeOnProgressbar: (status: boolean)=>void;
   table: {
     bodyClassname?: string;
     headClassname?: string;
@@ -53,9 +53,12 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
     this.updatePage = this.updatePage.bind(this);
   }
 
-  componentDidUpdate(prevProps: Partial<PaginatedEndpointTableProps>): void {
+  componentDidUpdate(prevProps: Partial<PaginatedEndpointTableProps>, prevState: Partial<PaginatedEndpointTableState>): void {
     if (prevProps.table.offset !== this.props.table.offset || prevProps.search.searchQuery !== this.props.search.searchQuery) {
       this.updatePage();
+    }
+    if(this.state.loading !== prevState.loading){
+      this.props.changeOnProgressbar(this.state.loading)
     }
   }
 
@@ -68,6 +71,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
       loading: true
     }, () => {
       (async () => {
+        
         const response = await request({
           url: `${this.props.endpoint.endpoint}?pagination=${JSON.stringify(this.props.search.searchQuery !== "" ? {
             limit: this.props.table.limit,
@@ -151,7 +155,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
   */
 
   public render(): JSX.Element {
-    this.state.loading?this.props.changeOnProgressbar("start"):this.props.changeOnProgressbar("stop");
+   // this.state.loading?this.props.changeOnProgressbar("start"):this.props.changeOnProgressbar("stop");
     return (
       <>
         {
