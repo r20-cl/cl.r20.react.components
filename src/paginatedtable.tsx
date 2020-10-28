@@ -1,12 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, {Component} from "react";
-import {v4} from "uuid";
-import {ParseOptionsError, request, RequestResponse, SimpleMap} from "@miqro/core";
+import React, { Component } from "react";
+import { v4 } from "uuid";
+import { ParseOptionsError, request, RequestResponse, SimpleMap } from "@miqro/core";
 
 export interface PaginatedEndpointTableProps {
   renderColumns?: (columns: string[]) => JSX.Element;
   renderRow?: (columns: string[], row: any) => JSX.Element;
-  changeOnProgressbar: (status: boolean)=>void;
+  changeOnProgressbar?: (status: boolean) => void;
   table: {
     bodyClassname?: string;
     headClassname?: string;
@@ -57,13 +57,16 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
     if (prevProps.table.offset !== this.props.table.offset || prevProps.search.searchQuery !== this.props.search.searchQuery) {
       this.updatePage();
     }
+    /*
     if(this.state.loading !== prevState.loading){
       this.props.changeOnProgressbar(this.state.loading)
     }
+    */
   }
 
   componentDidMount(): void {
     this.updatePage();
+    //this.props.changeOnProgressbar(this.state.loading)
   }
 
   protected updatePage(): void {
@@ -71,7 +74,11 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
       loading: true
     }, () => {
       (async () => {
-        
+
+        if (this.props.changeOnProgressbar)
+          this.props.changeOnProgressbar(this.state.loading)
+
+
         const response = await request({
           url: `${this.props.endpoint.endpoint}?pagination=${JSON.stringify(this.props.search.searchQuery !== "" ? {
             limit: this.props.table.limit,
@@ -81,9 +88,9 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
               query: this.props.search.searchQuery
             }
           } : {
-            limit: this.props.table.limit,
-            offset: this.props.table.offset
-          })}`,
+              limit: this.props.table.limit,
+              offset: this.props.table.offset
+            })}`,
           headers: this.props.endpoint.headers,
           method: "GET"
         });
@@ -98,6 +105,8 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
             }, () => {
               if (this.props.onPageData) {
                 try {
+                  if (this.props.changeOnProgressbar)
+                    this.props.changeOnProgressbar(this.state.loading)
                   this.props.onPageData(response);
                 } catch (e) {
                   console.error(e);
@@ -155,17 +164,17 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
   */
 
   public render(): JSX.Element {
-   // this.state.loading?this.props.changeOnProgressbar("start"):this.props.changeOnProgressbar("stop");
+    // this.state.loading?this.props.changeOnProgressbar("start"):this.props.changeOnProgressbar("stop");
     return (
       <>
         {
           !this.state.loading &&
           <table className={this.props.table.className}>
             <thead className={this.props.table.headClassname}>
-            {this.renderColumns(this.props.table.columns)}
+              {this.renderColumns(this.props.table.columns)}
             </thead>
             <tbody className={this.props.table.bodyClassname}>
-            {this.state.rows.map(val => this.renderRow(this.props.table.columns, val))}
+              {this.state.rows.map(val => this.renderRow(this.props.table.columns, val))}
             </tbody>
           </table>
         }
