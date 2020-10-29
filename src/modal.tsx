@@ -175,7 +175,7 @@ export class Modal<T = boolean> extends Component<ModalProps<T>, ModalState> {
                 {
                     this.state.isOpen &&
                     <div className="modal-r20 modal-r20-open" onClick={this.props.closeModal}>
-                        <div className="modal-r20-dialog" style={{width: this.props.width?`${this.props.width}vw`:"auto", height: this.props.height?`${this.props.height}vw`:"auto"}} onClick={this.handleModalDialogClick}>
+                        <div className="modal-r20-dialog" style={{width: this.props.width?`${this.props.width}vw`:"auto", height: this.props.height?`${this.props.height}vh`:"auto"}} onClick={this.handleModalDialogClick}>
                             {/*this.renderHeader()*/}
                             {this.props.children}
                             {/*this.renderFooter()*/}
