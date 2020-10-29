@@ -17,6 +17,8 @@ export interface ModalProps<T = boolean> {
     textButtonCancel?: string;
     textBody?: string;
     textBodyEnd?: string;
+    width?: number;
+    height?: number;
     onShowMessage: (e: ModalMessageOk) => void;
     closeModal?: () => void;
     handleActionModal?(): void;
@@ -87,7 +89,7 @@ export class Modal<T = boolean> extends Component<ModalProps<T>, ModalState> {
     }
 
     protected handleActionModal(): void {
-        
+
         this.setState({
             showMessage: this.props.textBodyEnd ? this.props.textBodyEnd : "Gracias...",
             showButtonOk: false
@@ -167,13 +169,13 @@ export class Modal<T = boolean> extends Component<ModalProps<T>, ModalState> {
     }
 
     render(): JSX.Element {
-       
+
         if (this.props.children) {
             return (<>
                 {
                     this.state.isOpen &&
                     <div className="modal-r20 modal-r20-open" onClick={this.props.closeModal}>
-                        <div className="modal-r20-dialog" onClick={this.handleModalDialogClick}>
+                        <div className="modal-r20-dialog" style={{width: this.props.width?`${this.props.width}vw`:"auto", height: this.props.height?`${this.props.height}vw`:"auto"}} onClick={this.handleModalDialogClick}>
                             {/*this.renderHeader()*/}
                             {this.props.children}
                             {/*this.renderFooter()*/}
