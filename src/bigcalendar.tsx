@@ -55,6 +55,7 @@ export class BigCalendar extends React.Component<BigCalendarProps, BigCalendarSt
       uuid: v4()
     }
     this.updateBigCalendar = this.updateBigCalendar.bind(this);
+    this.renderHeader = this.renderHeader.bind(this);
   }
 
   public componentDidMount(): void {
