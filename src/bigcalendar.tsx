@@ -131,16 +131,6 @@ export class BigCalendar extends React.Component<BigCalendarProps, BigCalendarSt
       <div
         data-testid={`big-calendar-container`}
         className={this.props.className ? this.props.className : DEFAULT_CLASSNAMES.className}>
-        <div className="row d-none d-sm-block d-md-flex p-1 big-calendar-thead-color margin-0">
-          <h5 className="col-md p-1 text-center">Lunes</h5>
-
-          <h5 className="col-md p-1 text-center">Martes</h5>
-          <h5 className="col-md p-1 text-center">Miércoles</h5>
-          <h5 className="col-md p-1 text-center">Jueves</h5>
-          <h5 className="col-md p-1 text-center">Viernes</h5>
-          <h5 className="col-md p-1 text-center">Sábado</h5>
-          <h5 className="col-md p-1 text-center">Domingo</h5>
-        </div>
         {this.renderWeeks(this.state.weeks)}
       </div>
     );
