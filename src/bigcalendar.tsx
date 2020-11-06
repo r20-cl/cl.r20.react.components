@@ -1,6 +1,6 @@
 import React from "react";
-import {v4} from "uuid";
-import {calculateWeeks} from "./bigcalendar-utils";
+import { v4 } from "uuid";
+import { calculateWeeks } from "./bigcalendar-utils";
 
 export interface BigCalendarProps {
   observer: Date;
@@ -9,9 +9,13 @@ export interface BigCalendarProps {
   dayClassName?: string;
   activeDayClassName?: string;
   dayDateClassName?: string;
+  headerClassName?:string;
+  headerDayClassName?:string;
+  headerDays?:string[];
   renderWeeks?: (weeks: MinimalWeek[]) => JSX.Element;
   renderWeekDays?: (week: MinimalWeek) => JSX.Element;
   renderDay?: (day: MinimalDay) => JSX.Element;
+  //renderHeader?: (days: string[]) => JSX.Element;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -108,11 +112,25 @@ export class BigCalendar extends React.Component<BigCalendarProps, BigCalendarSt
     )
   }
 
+  protected renderHeader():JSX.Element{
+
+
+    return this.props.headerDays?(
+        <div className={this.props.headerClassName?this.props.headerClassName:"row d-none d-sm-block d-md-flex p-1 big-calendar-thead-color margin-0"}>
+          {
+            this.props.headerDays.map((name, index)=><h5 key={`${this.state.uuid}-headerDay-${index}`} className={this.props.headerDayClassName?this.props.headerDayClassName:"col-md p-1 text-center"}>{name}</h5>)
+          }
+        </div>
+      ):<></>
+
+  }
+
   public render(): JSX.Element {
     return (
       <div
         data-testid={`big-calendar-container`}
         className={this.props.className ? this.props.className : DEFAULT_CLASSNAMES.className}>
+        {this.renderHeader}
         {this.renderWeeks(this.state.weeks)}
       </div>
     );
