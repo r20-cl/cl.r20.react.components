@@ -34,10 +34,10 @@
     "jest": "^26.4.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "ts-jest": "^26.3.0",
-    "typescript": "^3.7.5"
+    "ts-jest": "^26.3.0"
   },
   "dependencies": {
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "typescript": "^3.7.5"
   }
 }
