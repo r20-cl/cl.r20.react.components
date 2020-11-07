@@ -42,4 +42,14 @@ describe("<BigCalendar />", () => {
     const lastInactiveDay = await component.findByTestId(`big-calendar-container-week-4-day-1`);
     expect(lastInactiveDay).toHaveClass("big-calendar-month-container-week-day");
   });
+  test("A 2021 time happy path", async () => {
+    const observer = new Date();
+    observer.setFullYear(2021);
+    observer.setMonth(7);
+    observer.setDate(1);
+    const component = renderComponent({
+      observer
+    });
+    // TODO asserts
+  });
 });

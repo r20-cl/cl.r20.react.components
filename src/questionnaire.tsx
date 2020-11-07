@@ -19,6 +19,8 @@ export interface QuestionnaireStep {
 
 export interface QuestionnaireProps {
   className?: string;
+  questionTextAreaClassName?: string;
+  questionTextAreaButtonClassName?: string;
   style?: { [k: string]: string };
   questionClassName?: string;
   onError?: (e: Error) => void;
@@ -139,6 +141,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
           <textarea
             key={`input-text-${stepId}`} // must be fixed for not to lose focus
             ref={this.focusRef}
+            className={this.props.questionTextAreaClassName ? this.props.questionTextAreaClassName : ""}
             data-testid={`input-text-${step.text}`}
             value={this.state.currentInput}
             onChange={event => {
@@ -149,6 +152,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
           <button
             key={v4()}
             data-testid={`input-text-save-${step.text}`}
+            className={this.props.questionTextAreaButtonClassName ? this.props.questionTextAreaButtonClassName : ""}
             onClick={() => {
               this.nextStep(this.state.currentInput);
             }
