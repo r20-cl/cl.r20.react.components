@@ -19,6 +19,7 @@ export interface QuestionnaireStep {
 
 export interface QuestionnaireProps {
   className?: string;
+  questionTextAreaSaveLabel: string;
   questionTextAreaClassName?: string;
   questionTextAreaButtonClassName?: string;
   questionSelectClassName?: string;
@@ -56,6 +57,8 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
     };
     this.focusRef = React.createRef();
     this.renderQuestion = this.renderQuestion.bind(this);
+    this.renderTextAreaQuestion = this.renderTextAreaQuestion.bind(this);
+    this.renderSelectQuestion = this.renderSelectQuestion.bind(this);
     this.nextStep = this.nextStep.bind(this);
   }
 
@@ -153,7 +156,8 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
           onClick={() => {
             this.nextStep(this.state.currentInput);
           }
-          }>save
+          }>
+            {this.props.questionTextAreaSaveLabel ? this.props.questionTextAreaSaveLabel : "save"}
           </button>
         <textarea
           key={`input-text-${stepId}`} // must be fixed for not to lose focus
