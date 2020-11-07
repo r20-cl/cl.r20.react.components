@@ -21,6 +21,7 @@ export interface QuestionnaireProps {
   className?: string;
   questionTextAreaClassName?: string;
   questionTextAreaButtonClassName?: string;
+  questionSelectClassName?: string;
   style?: { [k: string]: string };
   questionClassName?: string;
   onError?: (e: Error) => void;
@@ -125,6 +126,7 @@ export class Questionnaire extends React.Component<QuestionnaireProps, Questionn
           key={v4()}
           ref={this.focusRef}
           defaultValue={""}
+          className={this.props.questionSelectClassName ? this.props.questionSelectClassName : ""}
           data-testid={`input-select-${step.text}`}
           onChange={event => this.nextStep(event.target.value)}>
           {
