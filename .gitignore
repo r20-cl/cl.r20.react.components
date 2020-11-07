@@ -5,6 +5,5 @@ coverage/
 dist/
 .idea
 docs/
-.vscode/
 *.sqlite3
 demo/bundle*
