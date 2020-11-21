@@ -117,7 +117,7 @@ export class BigCalendar extends React.Component<BigCalendarProps, BigCalendarSt
 
 
     return this.props.headerDays ? (
-      <div className={this.props.headerClassName ? this.props.headerClassName : "row d-none d-sm-block d-md-flex p-1 big-calendar-thead-color margin-0"}>
+      <div key={`div-headerDays-${this.state.uuid}`} className={this.props.headerClassName ? this.props.headerClassName : "row d-none d-sm-block d-md-flex p-1 big-calendar-thead-color margin-0"}>
         {
           this.props.headerDays.map((name, index) => <h5 key={`${this.state.uuid}-headerDay-${index}`} className={this.props.headerDayClassName ? this.props.headerDayClassName : "col-md p-1 text-center"}>{name}</h5>)
         }
