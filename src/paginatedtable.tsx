@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { v4 } from "uuid";
 import { ParseOptionsError, request, RequestResponse, SimpleMap } from "@miqro/core";
+import querystring from "querystring";
 
 export interface PaginatedEndpointTableProps {
   renderColumns?: (columns: string[]) => JSX.Element;
@@ -29,7 +30,9 @@ export interface PaginatedEndpointTableProps {
   endpoint: {
     endpoint: string;
     headers: SimpleMap<string>;
+    query?: SimpleMap<string>;
   };
+  
 }
 
 export interface PaginatedEndpointTableState {
@@ -80,7 +83,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
 
 
         const response = await request({
-          url: `${this.props.endpoint.endpoint}?pagination=${JSON.stringify(this.props.search.searchQuery !== "" ? {
+          url: `${this.props.endpoint.endpoint}?${this.props.endpoint.query?`${querystring.stringify(this.props.endpoint.query)}&`:""}pagination=${JSON.stringify(this.props.search.searchQuery !== "" ? {
             limit: this.props.table.limit,
             offset: this.props.table.offset,
             search: {
