@@ -30,6 +30,7 @@ export interface PaginatedEndpointTableProps {
     columnsClassname?: string;
     columnsTRClassname?: string;
     columns: string[];
+    translateColumns?: string[];
     rowsClassname?: string;
     rowsTRClassname?: string;
   },
@@ -153,7 +154,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
   protected renderColumns(columns: string[]): JSX.Element {
     return this.props.renderColumns ? this.props.renderColumns(columns) : (
       <tr key={v4()} className={this.props.table.columnsClassname}>
-        {columns.map(name => <th key={v4()} className={this.props.table.columnsClassname}>{name}</th>)}
+        {columns.map((name, i) => <th key={v4()} className={this.props.table.columnsClassname}>{this.props.table.translateColumns?this.props.table.translateColumns[i]:name}</th>)}
       </tr>
     )
   }
