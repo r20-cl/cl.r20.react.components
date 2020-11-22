@@ -4,6 +4,19 @@ import { v4 } from "uuid";
 import { ParseOptionsError, request, RequestResponse, SimpleMap } from "@miqro/core";
 import querystring from "querystring";
 
+const cleanQuery = (query: SimpleMap<string | undefined>): SimpleMap<string> => {
+  const keys = Object.keys(query);
+  const ret = {
+    ...query
+  };
+  for(const k of keys) {
+    if(query[k] === undefined) {
+      delete ret[k];
+    }
+  }
+  return ret;
+}
+
 export interface PaginatedEndpointTableProps {
   renderColumns?: (columns: string[]) => JSX.Element;
   renderRow?: (columns: string[], row: any) => JSX.Element;
@@ -32,7 +45,7 @@ export interface PaginatedEndpointTableProps {
     headers: SimpleMap<string>;
     query?: SimpleMap<string>;
   };
-  
+
 }
 
 export interface PaginatedEndpointTableState {
@@ -83,7 +96,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
 
 
         const response = await request({
-          url: `${this.props.endpoint.endpoint}?${this.props.endpoint.query?`${querystring.stringify(this.props.endpoint.query)}&`:""}pagination=${JSON.stringify(this.props.search.searchQuery !== "" ? {
+          url: `${this.props.endpoint.endpoint}?${this.props.endpoint.query ? `${querystring.stringify(cleanQuery(this.props.endpoint.query))}&` : ""}pagination=${JSON.stringify(this.props.search.searchQuery !== "" ? {
             limit: this.props.table.limit,
             offset: this.props.table.offset,
             search: {
