@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, { Component } from "react";
-import { v4 } from "uuid";
-import { ParseOptionsError, request, RequestResponse, SimpleMap } from "@miqro/core";
+import React, {Component} from "react";
+import {v4} from "uuid";
+import {ParseOptionsError, request, RequestResponse, SimpleMap} from "@miqro/core";
 import querystring from "querystring";
 
 const cleanQuery = (query: SimpleMap<string | undefined>): SimpleMap<string> => {
@@ -9,8 +9,8 @@ const cleanQuery = (query: SimpleMap<string | undefined>): SimpleMap<string> => 
   const ret = {
     ...query
   };
-  for(const k of keys) {
-    if(query[k] === undefined) {
+  for (const k of keys) {
+    if (query[k] === undefined) {
       delete ret[k];
     }
   }
@@ -95,20 +95,21 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
         if (this.props.changeOnProgressbar)
           this.props.changeOnProgressbar(this.state.loading)
 
-
+        const paginationQuery = {
+          q: this.props.search.searchQuery,
+          columns: this.props.search.columns,
+          limit: this.props.table.limit,
+          offset: this.props.table.offset
+        };
         const response = await request({
-          url: `${this.props.endpoint.endpoint}?${this.props.endpoint.query ? `${querystring.stringify(cleanQuery(this.props.endpoint.query))}&` : ""}pagination=${JSON.stringify(this.props.search.searchQuery !== "" ? {
-            limit: this.props.table.limit,
-            offset: this.props.table.offset,
-            search: {
-              columns: this.props.search.columns,
-              query: this.props.search.searchQuery
-            }
-          } : {
-              limit: this.props.table.limit,
-              offset: this.props.table.offset
-            })}`,
+          url: `${this.props.endpoint.endpoint}`,
           headers: this.props.endpoint.headers,
+          query: this.props.endpoint.query ? {
+            ...cleanQuery(this.props.endpoint.query),
+            ...paginationQuery,
+          } : {
+            ...paginationQuery
+          },
           method: "GET"
         });
         const result = response.data.result && response.data.result.rows ? response.data.result : response.data;
@@ -152,14 +153,13 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
   }
 
   protected renderColumns(columns: string[]): JSX.Element {
-    
+
     let newColumns: string[]
-    if(this.props.table.translateColumns !== undefined){
-      newColumns = columns.map((name, i)=>{
+    if (this.props.table.translateColumns !== undefined) {
+      newColumns = columns.map((name, i) => {
         return this.props.table.translateColumns[i];
       })
-    }
-    else{
+    } else {
       newColumns = columns;
     }
 
@@ -198,12 +198,12 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
         {
           !this.state.loading &&
           <table className={this.props.table.className}>
-            <thead className={this.props.table.headClassname}>
+              <thead className={this.props.table.headClassname}>
               {this.renderColumns(this.props.table.columns)}
-            </thead>
-            <tbody className={this.props.table.bodyClassname}>
+              </thead>
+              <tbody className={this.props.table.bodyClassname}>
               {this.state.rows.map(val => this.renderRow(this.props.table.columns, val))}
-            </tbody>
+              </tbody>
           </table>
         }
         {/*

@@ -15,11 +15,11 @@ describe("<PaginatedEndpointTable />", () => {
   let fakeServer = null;
 
   const fakeModel = fake((req, res) => {
-    req.query.pagination = JSON.parse(req.query.pagination);
+    // req.query.pagination = JSON.parse(req.query.pagination);
     switch (fakeModel.callCount) {
       case 1:
-        strictEqual(req.query.pagination.limit, 10);
-        strictEqual(req.query.pagination.offset, 0);
+        strictEqual(req.query.limit, "10");
+        strictEqual(req.query.offset, "0");
         res.json({
           result: {
             rows: [
@@ -33,8 +33,8 @@ describe("<PaginatedEndpointTable />", () => {
         });
         break;
       case 2:
-        strictEqual(req.query.pagination.limit, 10);
-        strictEqual(req.query.pagination.offset, 1);
+        strictEqual(req.query.limit, "10");
+        strictEqual(req.query.offset, "1");
         res.json({
           result: {
             rows: [
