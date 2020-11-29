@@ -74,16 +74,12 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
     if (prevProps.table.offset !== this.props.table.offset || prevProps.search.searchQuery !== this.props.search.searchQuery) {
       this.updatePage();
     }
-    /*
-    if(this.state.loading !== prevState.loading){
-      this.props.changeOnProgressbar(this.state.loading)
-    }
-    */
+   
   }
 
   componentDidMount(): void {
     this.updatePage();
-    //this.props.changeOnProgressbar(this.state.loading)
+   
   }
 
   protected updatePage(): void {
@@ -143,6 +139,8 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
             console.error(e);
           }
         }
+        if (this.props.changeOnProgressbar)
+          this.props.changeOnProgressbar(false)
       });
     })
   }
@@ -192,7 +190,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
   */
 
   public render(): JSX.Element {
-    // this.state.loading?this.props.changeOnProgressbar("start"):this.props.changeOnProgressbar("stop");
+    
     return (
       <>
         {
