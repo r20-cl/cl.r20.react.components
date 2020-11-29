@@ -40,6 +40,7 @@ describe("<Questionare />", () => {
     });
     const {findByText, findByTestId} = renderComponent({
       onError: fakeOnError,
+      questionTextAreaSaveLabel: "save",
       questionnaireGenerator: fakeGenerator
     });
     strictEqual(!!(await findByText("what is your favorite color ?")), true);
