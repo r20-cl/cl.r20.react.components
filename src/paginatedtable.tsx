@@ -175,7 +175,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
 
     return this.props.renderColumns ? this.props.renderColumns(newColumns) : (
       <tr key={v4()} className={this.props.table.columnsClassname}>
-        {columns.map((name, i) => <th key={v4()} className={this.props.table.columnsClassname}>{new}</th>)}
+        {columns.map((name, i) => <th key={v4()} className={this.props.table.columnsClassname}>{newColumns[i]}</th>)}
       </tr>
     )
   }
