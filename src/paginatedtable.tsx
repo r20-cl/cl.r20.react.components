@@ -1,21 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, { Component } from "react";
-import { v4 } from "uuid";
-import { ParseOptionsError, request, RequestResponse, SimpleMap } from "@miqro/core";
-import querystring from "querystring";
-
-const cleanQuery = (query: SimpleMap<string | undefined>): SimpleMap<string> => {
-  const keys = Object.keys(query);
-  const ret = {
-    ...query
-  };
-  for (const k of keys) {
-    if (query[k] === undefined) {
-      delete ret[k];
-    }
-  }
-  return ret;
-}
+import React, {Component} from "react";
+import {v4} from "uuid";
+import {ParseOptionsError, request, RequestResponse, SimpleMap} from "@miqro/core";
 
 export interface PaginatedEndpointTableProps {
   renderColumns?: (columns: string[]) => JSX.Element;
@@ -105,7 +91,10 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
 
         const response = await request({
           url: `${this.props.endpoint.endpoint}`,
-          query: paginationQuery,
+          query: this.props.endpoint.query ? {
+            ...paginationQuery,
+            ...this.props.endpoint.query
+          } : paginationQuery,
           headers: this.props.endpoint.headers,
           method: "GET"
         });
@@ -159,8 +148,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
       newColumns = columns.map((name, i) => {
         return this.props.table.translateColumns[i];
       })
-    }
-    else {
+    } else {
       newColumns = columns;
     }
 
@@ -199,12 +187,12 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
         {
           !this.state.loading &&
           <table className={this.props.table.className}>
-            <thead className={this.props.table.headClassname}>
+              <thead className={this.props.table.headClassname}>
               {this.renderColumns(this.props.table.columns)}
-            </thead>
-            <tbody className={this.props.table.bodyClassname}>
+              </thead>
+              <tbody className={this.props.table.bodyClassname}>
               {this.state.rows.map(val => this.renderRow(this.props.table.columns, val))}
-            </tbody>
+              </tbody>
           </table>
         }
         {/*
