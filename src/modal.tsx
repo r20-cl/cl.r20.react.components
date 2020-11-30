@@ -52,7 +52,7 @@ export class Modal<T = boolean> extends Component<ModalProps<T>, ModalState> {
         this.handleActionModal = this.handleActionModal.bind(this);
 
     }
-
+    
     componentDidUpdate(prevProps: Partial<ModalProps<T>>, prevState: Partial<ModalState>): void {
         if (this.state.isOpen !== this.props.isOpen) {
             this.setState({
