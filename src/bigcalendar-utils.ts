@@ -10,8 +10,7 @@ const setZeroHours = (now: Date): Date => {
 const cloneDateMonthFullYear = (date: number, now: Date): Date => {
   const ret = new Date();
   ret.setFullYear(now.getFullYear());
-  ret.setMonth(now.getMonth());
-  ret.setDate(date);
+  ret.setMonth(now.getMonth(), date);
   return setZeroHours(ret);
 };
 
@@ -20,10 +19,10 @@ const getLastDayOfMonth = (now: Date): Date => {
   firstDayOfNextMonth.setDate(1);
   if (now.getMonth() + 1 > 11) {
     // next year month case
-    firstDayOfNextMonth.setMonth(0);
+    firstDayOfNextMonth.setMonth(0, 1);
     firstDayOfNextMonth.setFullYear(now.getFullYear() + 1);
   } else {
-    firstDayOfNextMonth.setMonth(now.getMonth() + 1);
+    firstDayOfNextMonth.setMonth(now.getMonth() + 1, 1);
   }
   const TWELVE_HOURS_MS = 1000 * 60 * 60 * 12;
   return setZeroHours(new Date(firstDayOfNextMonth.getTime() - TWELVE_HOURS_MS));
@@ -51,20 +50,20 @@ export const calculateWeeks = (now: Date): MinimalWeek[] => {
     const firstDayOfNextMonth = cloneDateMonthFullYear(1, date);
     firstDayOfNextMonth.setDate(1);
     if (firstDayOfNextMonth.getMonth() === 11) {
-      firstDayOfNextMonth.setMonth(0);
+      firstDayOfNextMonth.setMonth(0, 1);
       firstDayOfNextMonth.setFullYear(firstDayOfNextMonth.getFullYear() + 1);
     } else {
-      firstDayOfNextMonth.setMonth(firstDayOfNextMonth.getMonth() + 1);
+      firstDayOfNextMonth.setMonth(firstDayOfNextMonth.getMonth() + 1, 1);
     }
     if (dateNumber === 1 && dayOfWeek !== 1) {
       // first day not monday so fill with inactive days from prev month
       const firstDayOfPrevMonth = cloneDateMonthFullYear(1, date);
       firstDayOfPrevMonth.setDate(1);
       if (firstDayOfPrevMonth.getMonth() === 0) {
-        firstDayOfPrevMonth.setMonth(11);
+        firstDayOfPrevMonth.setMonth(11, 1);
         firstDayOfPrevMonth.setFullYear(firstDayOfPrevMonth.getFullYear() - 1);
       } else {
-        firstDayOfPrevMonth.setMonth(firstDayOfPrevMonth.getMonth() - 1);
+        firstDayOfPrevMonth.setMonth(firstDayOfPrevMonth.getMonth() - 1, 1);
       }
       const lastDayOfPrevMonth = getLastDayOfMonth(firstDayOfPrevMonth);
       if (dayOfWeek === 0) {

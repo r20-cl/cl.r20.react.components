@@ -28,8 +28,7 @@ describe("<BigCalendar />", () => {
   test("F 2020 time happy path", async () => {
     const observer = new Date();
     observer.setFullYear(2020);
-    observer.setMonth(1);
-    observer.setDate(1);
+    observer.setMonth(1, 1);
     const component = renderComponent({
       observer
     });

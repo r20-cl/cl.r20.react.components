@@ -65,12 +65,12 @@ export class BigCalendar extends React.Component<BigCalendarProps, BigCalendarSt
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public componentDidUpdate(prevProps: Readonly<BigCalendarProps>, prevState: Readonly<BigCalendarState>, snapshot?: any): void {
     // only if observer change you need to re-render
-    if (prevProps.observer !== this.props.observer) {
+    if (prevProps.observer.getTime() !== this.props.observer.getTime()) {
       return this.updateBigCalendar();
     }
   }
 
-  protected updateBigCalendar = (): void => {
+  protected updateBigCalendar(): void {
     this.setState({
       weeks: calculateWeeks(this.props.observer)
     });
