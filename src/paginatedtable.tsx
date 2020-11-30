@@ -104,17 +104,8 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
 
 
         const response = await request({
-          url: `${this.props.endpoint.endpoint}?${this.props.endpoint.query ? `${querystring.stringify(cleanQuery(this.props.endpoint.query))}&` : ""}pagination=${JSON.stringify(this.props.search.searchQuery !== "" ? {
-            limit: this.props.table.limit,
-            offset: this.props.table.offset,
-            search: {
-              columns: this.props.search.columns,
-              query: this.props.search.searchQuery
-            }
-          } : {
-              limit: this.props.table.limit,
-              offset: this.props.table.offset
-            })}`,
+          url: `${this.props.endpoint.endpoint}`,
+          query: paginationQuery,
           headers: this.props.endpoint.headers,
           method: "GET"
         });
