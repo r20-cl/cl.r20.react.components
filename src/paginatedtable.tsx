@@ -126,12 +126,17 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
                   this.props.onPageData(response);
                 } catch (e) {
                   console.error(e);
+                  if (this.props.changeOnProgressbar)
+                    this.props.changeOnProgressbar(false)
                 }
               }
             });
           }
         } else {
+          if (this.props.changeOnProgressbar)
+            this.props.changeOnProgressbar(false)
           throw new ParseOptionsError("invalid endpoint data");
+          
         }
       })().catch((e) => {
         console.error(e);
@@ -143,7 +148,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
           }
         }
         if (this.props.changeOnProgressbar)
-          this.props.changeOnProgressbar(this.state.loading)
+          this.props.changeOnProgressbar(false)
       });
     })
   }
