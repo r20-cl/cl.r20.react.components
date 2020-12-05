@@ -2,6 +2,7 @@
 import * as React from "react";
 import {strictEqual} from "assert";
 import {render, RenderResult} from "@testing-library/react";
+import cors from "cors";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {PaginatedEndpointTable, PaginatedEndpointTableProps} from "../paginatedtable";
 import express from "express";
@@ -51,6 +52,7 @@ describe("<PaginatedEndpointTable />", () => {
   });
   beforeAll(async () => {
     const app = express();
+    app.use(cors());
     app.get("/mymodel", fakeModel);
     fakeServer = app.listen(8080);
   });
