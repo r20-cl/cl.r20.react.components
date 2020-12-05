@@ -102,13 +102,20 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
         };
 
 
-        const response = await request({
+        const response = await request(this.props.endpoint.headers ? {
           url: `${this.props.endpoint.endpoint}`,
           query: this.props.endpoint.query ? {
             ...cleanQuery(this.props.endpoint.query),
             ...paginationQuery
           } : paginationQuery,
           headers: this.props.endpoint.headers,
+          method: "GET"
+        } : {
+          url: `${this.props.endpoint.endpoint}`,
+          query: this.props.endpoint.query ? {
+            ...cleanQuery(this.props.endpoint.query),
+            ...paginationQuery
+          } : paginationQuery,
           method: "GET"
         });
 
