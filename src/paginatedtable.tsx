@@ -42,7 +42,7 @@ export interface PaginatedEndpointTableProps {
   },
   endpoint: {
     endpoint: string;
-    headers: SimpleMap<string>;
+    headers?: SimpleMap<string>;
     query?: SimpleMap<string>;
   };
 
