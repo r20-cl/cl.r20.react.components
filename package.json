@@ -1,5 +1,5 @@
 {
-  "name": "cl.fastpay.front.react.component",
+  "name": "cl.r20.react.components",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -22,6 +22,7 @@
     "@miqro/modelhandlers": "^0.9.4",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^10.4.9",
+    "@types/axios": "^0.14.0",
     "@types/jest": "^26.0.15",
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
@@ -38,6 +39,7 @@
   },
   "dependencies": {
     "@miqro/core": "^0.8.31",
+    "axios": "^0.21.0",
     "uuid": "^8.3.1"
   }
 }
