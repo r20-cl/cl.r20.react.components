@@ -141,6 +141,8 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
               if (this.props.onPageData) {
                 try {
                   this.props.onPageData(response as unknown as RequestResponse);
+                  if (this.props.changeOnProgressbar)
+                    this.props.changeOnProgressbar(false)
                 } catch (e) {
                   console.error(e);
                   if (this.props.changeOnProgressbar)
@@ -168,7 +170,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
           this.props.changeOnProgressbar(false)
       });
       if (this.props.changeOnProgressbar)
-        this.props.changeOnProgressbar(this.state.loading)
+        this.props.changeOnProgressbar(false)
     })
   }
 
@@ -211,14 +213,24 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
 
     if (isHeader) {
       return (
-        <th key={v4()} className={this.props.table.columnsClassname}><input type="checkbox" checked={this.state.selectedAllCheckbox}
-          onClick={(e) => this.setState({ selectedAllCheckbox: !this.state.selectedAllCheckbox })} /></th>
+        <th key={v4()} 
+          className={this.props.table.columnsClassname}>
+          <input type="checkbox"
+            key={v4()}
+            checked={this.state.selectedAllCheckbox}
+            onClick={(e) => this.setState({ selectedAllCheckbox: !this.state.selectedAllCheckbox },()=>{
+              this.onClickAllItems();
+            })} />
+        </th>
       )
     }
     else {
       return (
-        <td key={v4()} className={this.props.table.rowsClassname}><input type="checkbox" checked={this.state.selectedItem[row.id] !== undefined}
-          onClick={(e) => this.onClickItem(row)} /></td>
+        <td key={v4()} 
+          className={this.props.table.rowsClassname}>
+          <input key={v4()} type="checkbox" checked={this.state.selectedItem[row.id] !== undefined}
+          onClick={(e) => this.onClickItem(row)} />
+        </td>
       )
     }
 
@@ -235,22 +247,52 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
       newColumns = columns;
     }
 
+    let newCol : JSX.Element = <tr key={v4()} className={this.props.table.columnsClassname}>
+      {(this.props.renderCheckBox !== undefined && this.props.renderCheckBox === true) && this.renderCheckBox(true, undefined)}
+      {this.props.renderColumns ? this.props.renderColumns(newColumns) : (
+      
+        columns.map((name, i) => <th key={v4()} className={this.props.table.columnsClassname}>{newColumns[i]}</th>)
+      
+    )}
+    </tr>;
 
+    return newCol;
+    /*
     return this.props.renderColumns ? this.props.renderColumns(newColumns) : (
       <tr key={v4()} className={this.props.table.columnsClassname}>
-        {this.props.renderCheckBox !== undefined && this.props.renderCheckBox ? this.renderCheckBox(true, undefined) : ""}
+        {(this.props.renderCheckBox !== undefined && this.props.renderCheckBox===true) && this.renderCheckBox(true, undefined)}
         {columns.map((name, i) => <th key={v4()} className={this.props.table.columnsClassname}>{newColumns[i]}</th>)}
       </tr>
     )
+    */
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   protected renderRow(columns: string[], row: any): JSX.Element {
+
+    let newRow: JSX.Element = 
+    <tr key={v4()}
+      className={this.props.table.rowsTRClassname}>
+      
+      {(this.props.renderCheckBox !== undefined && this.props.renderCheckBox === true) && this.renderCheckBox(false, row)}
+      {this.props.renderRow ? this.props.renderRow(columns, row) : (
+       
+        columns.map(columnName => <td
+          key={v4()}
+          className={this.props.table.rowsClassname}>
+          {`${row[columnName]}`}
+        </td>)
+        
+      
+      )}
+    </tr>
+    return newRow;
+    /*
     return this.props.renderRow ? this.props.renderRow(columns, row) : (
       <tr
         key={v4()}
         className={this.props.table.rowsTRClassname}>
-        {this.props.renderCheckBox !== undefined && this.props.renderCheckBox ? this.renderCheckBox(false, row) : ""}
+        {(this.props.renderCheckBox !== undefined && this.props.renderCheckBox === true) && this.renderCheckBox(false, row) }
         {columns.map(columnName => <td
           key={v4()}
           className={this.props.table.rowsClassname}>
@@ -259,6 +301,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
         }
       </tr>
     )
+    */
   }
 
   /*
