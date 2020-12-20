@@ -1,9 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, {Component} from "react";
-import {v4} from "uuid";
+import React, { Component } from "react";
+import { v4 } from "uuid";
 import axios from "axios";
-import {stringify} from "querystring";
-import {ParseOptionsError, RequestResponse, SimpleMap} from "@miqro/core";
+import { stringify } from "querystring";
+import { ParseOptionsError, RequestResponse, SimpleMap } from "@miqro/core";
 
 const cleanQuery = (query: SimpleMap<string | undefined>): SimpleMap<string> => {
   const keys = Object.keys(query);
@@ -21,6 +21,8 @@ const cleanQuery = (query: SimpleMap<string | undefined>): SimpleMap<string> => 
 export interface PaginatedEndpointTableProps {
   renderColumns?: (columns: string[]) => JSX.Element;
   renderRow?: (columns: string[], row: any) => JSX.Element;
+  onClickCheckBox?: (item: any[]) => void;
+  renderCheckBox?: boolean;
   changeOnProgressbar?: (status: boolean) => void;
   table: {
     bodyClassname?: string;
@@ -55,6 +57,9 @@ export interface PaginatedEndpointTableState {
   renderedOffset?: number;
   pageCount: number;
   loading: boolean;
+  selectedAllCheckbox: boolean;
+  selectedItem: SimpleMap<any>;
+
 }
 
 export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProps> = PaginatedEndpointTableProps> extends Component<T, PaginatedEndpointTableState> {
@@ -66,9 +71,14 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
       rows: [],
       loading: true,
       renderedOffset: undefined,
-      pageCount: 0
+      pageCount: 0,
+      selectedAllCheckbox: false,
+      selectedItem: {},
+
     };
     this.updatePage = this.updatePage.bind(this);
+    this.onClickItem = this.onClickItem.bind(this);
+    this.onClickAllItems = this.onClickAllItems.bind(this);
   }
 
   componentDidUpdate(prevProps: Partial<PaginatedEndpointTableProps>, prevState: Partial<PaginatedEndpointTableState>): void {
@@ -112,12 +122,12 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
           headers: this.props.endpoint.headers,
           method: "GET"
         } : {
-          url: `${this.props.endpoint.endpoint}?${this.props.endpoint.query ? stringify({
-            ...cleanQuery(this.props.endpoint.query),
-            ...paginationQuery
-          }) : stringify(paginationQuery)}`,
-          method: "GET"
-        });
+            url: `${this.props.endpoint.endpoint}?${this.props.endpoint.query ? stringify({
+              ...cleanQuery(this.props.endpoint.query),
+              ...paginationQuery
+            }) : stringify(paginationQuery)}`,
+            method: "GET"
+          });
 
         const result = response.data.result && response.data.result.rows ? response.data.result : response.data;
         if (result && result.rows instanceof Array && result.count !== undefined) {
@@ -130,8 +140,6 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
             }, () => {
               if (this.props.onPageData) {
                 try {
-                  if (this.props.changeOnProgressbar)
-                    this.props.changeOnProgressbar(this.state.loading)
                   this.props.onPageData(response as unknown as RequestResponse);
                 } catch (e) {
                   console.error(e);
@@ -145,7 +153,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
           if (this.props.changeOnProgressbar)
             this.props.changeOnProgressbar(false)
           throw new ParseOptionsError("invalid endpoint data");
-          
+
         }
       })().catch((e) => {
         console.error(e);
@@ -159,11 +167,61 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
         if (this.props.changeOnProgressbar)
           this.props.changeOnProgressbar(false)
       });
+      if (this.props.changeOnProgressbar)
+        this.props.changeOnProgressbar(this.state.loading)
     })
   }
 
   componentWillUnmount(): void {
     this.unMounted = true;
+    if (this.props.onClickCheckBox !== undefined)
+      this.props.onClickCheckBox([]);
+  }
+
+  protected onClickAllItems(): void {
+    this.setState({ selectedItem: {} }, () => {
+      this.state.rows.forEach(i => {
+        this.onClickItem(i);
+      })
+    })
+  }
+
+  protected onClickItem(item: any): void {
+    const selectedItem = this.state.selectedItem;
+    const id = item.id ? item.id : -1;
+    let items: any[] = [];
+    if (id !== -1) {
+      if (selectedItem[id] !== undefined) {
+        delete selectedItem[id];
+      }
+      else {
+        selectedItem[id] = item;
+      }
+      this.setState({ selectedItem }, () => {
+        for (let e in selectedItem) {
+          items.push(selectedItem[e]);
+        }
+        if(this.props.onClickCheckBox !== undefined)
+          this.props.onClickCheckBox(items);
+      })
+    }
+  }
+
+  protected renderCheckBox(isHeader: boolean, row: any): JSX.Element {
+
+    if (isHeader) {
+      return (
+        <th key={v4()} className={this.props.table.columnsClassname}><input type="checkbox" checked={this.state.selectedAllCheckbox}
+          onClick={(e) => this.setState({ selectedAllCheckbox: !this.state.selectedAllCheckbox })} /></th>
+      )
+    }
+    else {
+      return (
+        <td key={v4()} className={this.props.table.rowsClassname}><input type="checkbox" checked={this.state.selectedItem[row.id] !== undefined}
+          onClick={(e) => this.onClickItem(row)} /></td>
+      )
+    }
+
   }
 
   protected renderColumns(columns: string[]): JSX.Element {
@@ -177,8 +235,10 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
       newColumns = columns;
     }
 
+
     return this.props.renderColumns ? this.props.renderColumns(newColumns) : (
       <tr key={v4()} className={this.props.table.columnsClassname}>
+        {this.props.renderCheckBox !== undefined && this.props.renderCheckBox ? this.renderCheckBox(true, undefined) : ""}
         {columns.map((name, i) => <th key={v4()} className={this.props.table.columnsClassname}>{newColumns[i]}</th>)}
       </tr>
     )
@@ -190,9 +250,13 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
       <tr
         key={v4()}
         className={this.props.table.rowsTRClassname}>
+        {this.props.renderCheckBox !== undefined && this.props.renderCheckBox ? this.renderCheckBox(false, row) : ""}
         {columns.map(columnName => <td
           key={v4()}
-          className={this.props.table.rowsClassname}>{`${row[columnName]}`}</td>)}
+          className={this.props.table.rowsClassname}>
+          {`${row[columnName]}`}
+        </td>)
+        }
       </tr>
     )
   }
@@ -212,12 +276,12 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
         {
           !this.state.loading &&
           <table className={this.props.table.className}>
-              <thead className={this.props.table.headClassname}>
+            <thead className={this.props.table.headClassname}>
               {this.renderColumns(this.props.table.columns)}
-              </thead>
-              <tbody className={this.props.table.bodyClassname}>
+            </thead>
+            <tbody className={this.props.table.bodyClassname}>
               {this.state.rows.map(val => this.renderRow(this.props.table.columns, val))}
-              </tbody>
+            </tbody>
           </table>
         }
         {/*
