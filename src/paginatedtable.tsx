@@ -219,7 +219,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
             key={v4()}
             checked={this.state.selectedAllCheckbox}
             onClick={(e) => this.setState({ selectedAllCheckbox: !this.state.selectedAllCheckbox },()=>{
-              this.onClickAllItems();
+              this.state.selectedAllCheckbox?this.onClickAllItems():this.setState({selectedItem:{}}, ()=>this.props.onClickCheckBox([]))
             })} />
         </th>
       )
