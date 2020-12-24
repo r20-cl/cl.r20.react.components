@@ -57,23 +57,25 @@ export interface PaginatedEndpointTableState {
   renderedOffset?: number;
   pageCount: number;
   loading: boolean;
-  selectedAllCheckbox: boolean;
+  selectedAll: boolean[];
   selectedItem: SimpleMap<any>;
 
 }
 
-export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProps> = PaginatedEndpointTableProps> extends Component<T, PaginatedEndpointTableState> {
+export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProps, PaginatedEndpointTableState> {
   private unMounted = false;
 
-  constructor(props: T) {
+  constructor(props: PaginatedEndpointTableProps) {
     super(props);
+    
     this.state = {
       rows: [],
       loading: true,
       renderedOffset: undefined,
       pageCount: 0,
-      selectedAllCheckbox: false,
+      //selectedAllCheckbox: false,
       selectedItem: {},
+      selectedAll: []
 
     };
     this.updatePage = this.updatePage.bind(this);
@@ -94,6 +96,12 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
 
   componentDidMount(): void {
     this.updatePage();
+
+    let arrCheck: boolean[] = []
+    for(let i=0; i<this.state.pageCount; i++){
+      arrCheck[i] = false;
+    }
+    this.setState({selectedAll: arrCheck})
     //this.props.changeOnProgressbar(this.state.loading)
   }
 
@@ -143,6 +151,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
                   this.props.onPageData(response as unknown as RequestResponse);
                   if (this.props.changeOnProgressbar)
                     this.props.changeOnProgressbar(false)
+                 
                 } catch (e) {
                   console.error(e);
                   if (this.props.changeOnProgressbar)
@@ -189,7 +198,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
   }
 
   protected onClickItem(item: any): void {
-    const selectedItem = this.state.selectedItem;
+    const selectedItem = {...this.state.selectedItem};
     const id = item.id ? item.id : -1;
     let items: any[] = [];
     if (id !== -1) {
@@ -214,6 +223,21 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
     if (isHeader) {
       return (
         <th key={v4()} 
+        className={this.props.table.columnsClassname}>
+        <input type="checkbox"
+          key={v4()}
+          checked={this.state.selectedAll[Math.ceil(this.props.table.offset/this.props.table.limit)]}
+          onClick={(e) => {
+            const select = {...this.state.selectedAll}
+            const npage = Math.ceil(this.props.table.offset/this.props.table.limit)
+            select[npage] = !select[npage]; 
+            this.setState({ selectedAll: select },()=>{
+            this.state.selectedAll[npage]?this.onClickAllItems():this.setState({selectedItem:{}}, ()=>this.props.onClickCheckBox([]))
+          })}
+          } />
+      </th>
+        /*
+        <th key={v4()} 
           className={this.props.table.columnsClassname}>
           <input type="checkbox"
             key={v4()}
@@ -222,7 +246,9 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
               this.state.selectedAllCheckbox?this.onClickAllItems():this.setState({selectedItem:{}}, ()=>this.props.onClickCheckBox([]))
             })} />
         </th>
+        */
       )
+      
     }
     else {
       return (
@@ -247,7 +273,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
       newColumns = columns;
     }
 
-    let newCol : JSX.Element = <tr key={v4()} className={this.props.table.columnsClassname}>
+    let newRowCol : JSX.Element = <tr key={v4()} className={this.props.table.columnsClassname}>
       {(this.props.renderCheckBox !== undefined && this.props.renderCheckBox === true) && this.renderCheckBox(true, undefined)}
       {this.props.renderColumns ? this.props.renderColumns(newColumns) : (
       
@@ -256,7 +282,7 @@ export class PaginatedEndpointTable<T extends Partial<PaginatedEndpointTableProp
     )}
     </tr>;
 
-    return newCol;
+    return newRowCol;
     /*
     return this.props.renderColumns ? this.props.renderColumns(newColumns) : (
       <tr key={v4()} className={this.props.table.columnsClassname}>
