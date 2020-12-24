@@ -194,7 +194,14 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
     this.state.rows.forEach((e, i)=>{
       sall[i] = e
     })
-    this.setState({selectedItem: sall})
+    let items: any[] = [];
+    this.setState({selectedItem: sall},() => {
+      for (let e in sall) {
+        items.push(sall[e]);
+      }
+      if(this.props.onClickCheckBox !== undefined)
+        this.props.onClickCheckBox(items);
+    })
     /*
     this.setState({ selectedItem: {} }, () => {
       this.state.rows.forEach(i => {
