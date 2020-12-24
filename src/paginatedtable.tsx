@@ -198,7 +198,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
   }
 
   protected onClickItem(item: any): void {
-    const selectedItem = {...this.state.selectedItem};
+    const selectedItem = this.state.selectedItem//{...this.state.selectedItem};
     const id = item.id ? item.id : -1;
     let items: any[] = [];
     if (id !== -1) {
