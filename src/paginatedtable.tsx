@@ -191,10 +191,13 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
 
   protected onClickAllItems(): void {
     const sall: SimpleMap<any> = {};
-    this.state.rows.forEach((e, i)=>{
-      sall[i] = e
+    this.state.rows.forEach((e)=>{
+      sall[e.id] = e
     })
     let items: any[] = [];
+    for (let e in this.state.selectedItem) {
+      items.push(this.state.selectedItem[e]);
+    }
     this.setState({selectedItem: sall},() => {
       for (let e in sall) {
         items.push(sall[e]);
@@ -242,7 +245,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
           key={v4()}
           checked={this.state.selectedAll[Math.ceil(this.props.table.offset/this.props.table.limit)]}
           onClick={(e) => {
-            const select = {...this.state.selectedAll}
+            const select = this.state.selectedAll
             const npage = Math.ceil(this.props.table.offset/this.props.table.limit)
             select[npage] = !select[npage]; 
             this.setState({ selectedAll: select },()=>{
