@@ -4,6 +4,7 @@ import { v4 } from "uuid";
 import axios from "axios";
 import { stringify } from "querystring";
 import { ParseOptionsError, RequestResponse, SimpleMap } from "@miqro/core";
+import { inspect } from "util";
 
 const cleanQuery = (query: SimpleMap<string | undefined>): SimpleMap<string> => {
   const keys = Object.keys(query);
@@ -319,8 +320,8 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
 */
   protected onClickItem(item: Item): void {
 
-    item.selected = !item.selected;
     const mitem = {...item};
+    console.log("paginatedtable mitem: "+inspect(mitem));
     mitem.selected = !item.selected;
     const sitembpage: SimpleMap<Item[]> = {...this.state.selectedItemByPage};
     const items: Item[] = [...this.state.selectedItemByPage[this.state.npage]];
@@ -335,6 +336,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
             items.push(item);
         })
       }
+      console.log("paginatedtable items: "+inspect(items));
       if(this.props.onClickCheckBox)
         this.props.onClickCheckBox(items);
     })
