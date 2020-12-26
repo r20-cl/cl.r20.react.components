@@ -217,6 +217,8 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
       e.selected = checked
     })
     sitembpage[this.state.npage] = items;
+    const statusCheckBoxByPage = [...this.state.statusCheckBoxByPage];
+    statusCheckBoxByPage[this.state.npage] = checked;
     this.setState({selectedItemByPage: sitembpage}, ()=>{
         const items: Item[] = [];
         for(let key in this.state.selectedItemByPage){
