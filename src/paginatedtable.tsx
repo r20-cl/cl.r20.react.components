@@ -93,6 +93,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
     };
     this.updatePage = this.updatePage.bind(this);
     this.onClickItem = this.onClickItem.bind(this);
+    this.onClickAllItemsPage = this.onClickAllItemsPage.bind(this);
     //this.onClickAllItems = this.onClickAllItems.bind(this);
   }
 
@@ -219,13 +220,13 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
       this.props.onClickCheckBox([]);
   }
 
-  protected selectedAllItemsPage(): void{
+  protected onClickAllItemsPage(): void{
     //Seleccionar todos los items de la pagina y marcar como true el array selectedAll
 
     const sitembpage: SimpleMap<Item[]> = {...this.state.selectedItemByPage};
     const items: Item[] = sitembpage[this.state.npage];
     items.forEach(e=>{
-      e.selected = true
+      e.selected = !e.selected
     })
     sitembpage[this.state.npage] = items;
     this.setState({selectedItemByPage: sitembpage}, ()=>{
@@ -386,7 +387,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
           key={v4()}
           checked={this.isCheckedAllItems()}
           onClick={(e) => {
-            this.selectedAllItemsPage();
+            this.onClickAllItemsPage();
             //e.target.checked?this.deselectedAllItemsPage:this.selectedAllItemsPage;
             //this.state.selectedAll[this.state.npage]?this.deselectedAllItemsPage:this.selectedAllItemsPage();
             /*
