@@ -156,19 +156,24 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
         const result = response.data.result && response.data.result.rows ? response.data.result : response.data;
         if (result && result.rows instanceof Array && result.count !== undefined) {
           if (!this.unMounted) {
-            const items: Item[] = [];
-            result.rows.forEach(row => {
-              let item: Item = {
-                id: v4(),
-                data: row,
-                selected: false
-              }
-              items.push(item)
-            });
+            const selectedItemByPage: SimpleMap<Item[]> = {...this.state.selectedItemByPage};
+            if(selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] === undefined)
+            {
+                const items: Item[] = [];
+                result.rows.forEach(row => {
+                let item: Item = {
+                  id: v4(),
+                  data: row,
+                  selected: false
+                }
+                items.push(item)
+              });
 
-            const selectedItemByPage: SimpleMap<Item[]> = {};
-            selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] = items;
+            
+              selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] = items;
 
+            }
+            
             this.setState({
               rows: result.rows,
               loading: false,
