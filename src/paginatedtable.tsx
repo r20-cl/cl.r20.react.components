@@ -220,11 +220,11 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
     const statusCheckBoxByPage = [...this.state.statusCheckBoxByPage];
     statusCheckBoxByPage[this.state.npage] = checked;
     this.setState({selectedItemByPage: sitembpage, statusCheckBoxByPage: statusCheckBoxByPage}, ()=>{
-        const items: Item[] = [];
+        const items: any[] = [];
         for(let key in this.state.selectedItemByPage){
           this.state.selectedItemByPage[key].forEach(item=>{
             if(item.selected)
-              items.push(item);
+              items.push(item.data);
           })
         }
         if(this.props.onClickCheckBox)
@@ -245,11 +245,11 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
     const statusCheckBoxByPage = [...this.state.statusCheckBoxByPage];
     statusCheckBoxByPage[this.state.npage] = this.isCheckedAllItems();
     this.setState({selectedItemByPage: sitembpage, statusCheckBoxByPage: statusCheckBoxByPage}, ()=>{
-      const items: Item[] = [];
+      const items: any[] = [];
       for(let key in this.state.selectedItemByPage){
         this.state.selectedItemByPage[key].forEach(item=>{
           if(item.selected)
-            items.push(item);
+            items.push(item.data);
         })
       }
       if(this.props.onClickCheckBox)
