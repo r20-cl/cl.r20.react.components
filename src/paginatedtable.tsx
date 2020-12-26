@@ -385,8 +385,9 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
         <input type="checkbox"
           key={v4()}
           checked={this.isCheckedAllItems()}
-          onChange={(e) => {
-            e.target.checked?this.deselectedAllItemsPage:this.selectedAllItemsPage;
+          onClick={(e) => {
+            this.selectedAllItemsPage();
+            //e.target.checked?this.deselectedAllItemsPage:this.selectedAllItemsPage;
             //this.state.selectedAll[this.state.npage]?this.deselectedAllItemsPage:this.selectedAllItemsPage();
             /*
             const select = this.state.selectedAll
