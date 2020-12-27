@@ -58,7 +58,6 @@ export interface PaginatedEndpointTableProps {
     headers?: SimpleMap<string>;
     query?: SimpleMap<string>;
   };
-
 }
 
 export interface PaginatedEndpointTableState {
@@ -163,9 +162,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
               items.push(item)
             });
 
-
             selectedItemByPage[Math.ceil(this.props.table.offset / this.props.table.limit)] = items;
-
 
             this.setState({
               rows: result.rows,
@@ -267,8 +264,6 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
         if (this.props.onClickCheckBox)
           this.props.onClickCheckBox(items);
       }, TIMEOUT_CHECK)
-
-
     })
   }
 
@@ -300,7 +295,6 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
         </th>
 
       )
-
     }
     else {
       return (
@@ -311,7 +305,6 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
         </td>
       )
     }
-
   }
 
   protected renderColumns(columns: string[]): JSX.Element {
@@ -328,9 +321,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
     let newRowCol: JSX.Element = <tr key={v4()} className={this.props.table.columnsClassname}>
       {(this.props.renderCheckBox !== undefined && this.props.renderCheckBox === true) && this.renderCheckBox(true, undefined)}
       {this.props.renderColumns ? this.props.renderColumns(newColumns) : (
-
         columns.map((name, i) => <th key={v4()} className={this.props.table.columnsClassname}>{newColumns[i]}</th>)
-
       )}
     </tr>;
 
@@ -346,23 +337,18 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
     let newRow: JSX.Element =
       <tr key={v4()}
         className={this.props.table.rowsTRClassname}>
-
         {(this.props.renderCheckBox !== undefined && this.props.renderCheckBox === true) && this.renderCheckBox(false, item)}
         {this.props.renderRow ? this.props.renderRow(columns, row) : (
-
           columns.map(columnName => <td
             key={v4()}
             className={this.props.table.rowsClassname}>
             {`${row[columnName]}`}
           </td>)
-
-
         )}
       </tr>
     return newRow;
 
   }
-
 
   public render(): JSX.Element {
     // this.state.loading?this.props.changeOnProgressbar("start"):this.props.changeOnProgressbar("stop");
@@ -380,7 +366,6 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
             </tbody>
           </table>
         }
-
       </>
     );
   }
