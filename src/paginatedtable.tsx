@@ -156,14 +156,15 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
                 items.push(item)
               }
             }
-            /*
-            let item: Item = {
-              id: row[this.props.table.columnId],
-              data: row,
-              selected: isSelected
+            else{
+              let item: Item = {
+                id: v4(),
+                data: row,
+                selected: false
+              }
+              items.push(item)
             }
-            items.push(item)
-            */
+
             });
 
               
