@@ -42,6 +42,7 @@ export interface PaginatedEndpointTableProps {
     translateColumns?: string[];
     rowsClassname?: string;
     rowsTRClassname?: string;
+    columnId?: string;
   },
   onError?: (e: Error) => void;
   onPageData?: (response: RequestResponse) => void;
@@ -142,22 +143,24 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
         if (result && result.rows instanceof Array && result.count !== undefined) {
           if (!this.unMounted) {
             const selectedItemByPage: SimpleMap<Item[]> = {...this.state.selectedItemByPage};
-            if(selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] === undefined)
-            {
-                const items: Item[] = [];
-                result.rows.forEach(row => {
-                let item: Item = {
-                  id: v4(),
-                  data: row,
-                  selected: false
-                }
-                items.push(item)
-              });
+            //if(selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] === undefined)
+            //{
+              //if(this.props.table?.columnId !== undefined)
+              //{
+                  const items: Item[] = [];
+                  result.rows.forEach(row => {
+                  let item: Item = {
+                    id: row[this.props.table?.columnId],
+                    data: row,
+                    selected: false
+                  }
+                  items.push(item)
+                });
 
-            
-              selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] = items;
-
-            }
+              
+                selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] = items;
+              //}
+            //}
             
             this.setState({
               rows: result.rows,
