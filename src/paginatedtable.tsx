@@ -143,31 +143,25 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
         if (result && result.rows instanceof Array && result.count !== undefined) {
           if (!this.unMounted) {
             const selectedItemByPage: SimpleMap<Item[]> = {...this.state.selectedItemByPage};
-            //if(selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] === undefined)
-            //{
-              //if(this.props.table?.columnId !== undefined)
-              //{
-                  const items: Item[] = [];
-                  result.rows.forEach(row => {
-                  let isSelected:boolean = false;
-                  if(selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)]){
-                    let item =  selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)].find(it=>it.id===row[this.props.table?.columnId]);
-                    if(item)
-                      isSelected = item.selected;
-
-                  }
-                  let item: Item = {
-                    id: row[this.props.table?.columnId],
-                    data: row,
-                    selected: isSelected
-                  }
-                  items.push(item)
-                });
+            const items: Item[] = [];
+            result.rows.forEach(row => {
+            let isSelected:boolean = false;
+            if(selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] && row[this.props.table?.columnId]!==undefined){
+              let item =  selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)].find(it=>it.id===row[this.props.table?.columnId]);
+              if(item)
+                isSelected = item.selected;
+            }
+            let item: Item = {
+              id: row[this.props.table?.columnId],
+              data: row,
+              selected: isSelected
+            }
+            items.push(item)
+            });
 
               
-                selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] = items;
-              //}
-            //}
+            selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] = items;
+             
             
             this.setState({
               rows: result.rows,
