@@ -152,7 +152,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
                   let item: Item = {
                     id: row[this.props.table?.columnId],
                     data: row,
-                    selected: false
+                    selected: selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)]?selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)].find(it=>it.id===row[this.props.table?.columnId]).selected:false
                   }
                   items.push(item)
                 });
