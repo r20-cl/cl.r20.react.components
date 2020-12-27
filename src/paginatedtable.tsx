@@ -149,22 +149,16 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
             if(selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)] && this.props.table?.columnId!==undefined){
               let item =  selectedItemByPage[Math.ceil(this.props.table.offset/this.props.table.limit)].find(it=>it.id===row[this.props.table?.columnId]);
               if(item){
-                //isSelected = item.selected;
-                item.id = row[this.props.table.columnId];
-                item.data = row;
-                item.selected = item.selected;
-                items.push(item)
+                isSelected = item.selected;
               }
             }
-            else{
-              let item: Item = {
-                id: v4(),
-                data: row,
-                selected: false
-              }
-              items.push(item)
+            
+            let item: Item = {
+              id: row[this.props.table.columnId],
+              data: row,
+              selected: isSelected
             }
-
+            items.push(item)
             });
 
               
