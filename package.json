@@ -19,17 +19,17 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@miqro/modelhandlers": "^0.9.4",
-    "@testing-library/jest-dom": "^5.11.6",
+    "@miqro/modelhandlers": "^0.9.14",
+    "@testing-library/jest-dom": "^5.11.8",
     "@testing-library/react": "^10.4.9",
     "@types/axios": "^0.14.0",
-    "@types/jest": "^26.0.15",
+    "@types/jest": "^26.0.20",
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
     "@typescript-eslint/eslint-plugin": "^3.9.1",
     "@typescript-eslint/parser": "^3.0.0",
     "browserify": "^16.5.2",
-    "eslint": "^7.14.0",
+    "eslint": "^7.17.0",
     "express": "^4.17.1",
     "jest": "^26.6.3",
     "react": "^16.14.0",
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@miqro/core": "^0.8.31",
-    "axios": "^0.21.0",
-    "uuid": "^8.3.1"
+    "axios": "^0.21.1",
+    "uuid": "^8.3.2"
   }
 }
