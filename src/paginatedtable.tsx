@@ -150,15 +150,15 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
             const selectedItemByPage: SimpleMap<Item[]> = {...this.state.selectedItemByPage};
             const items: Item[] = [];
             result.rows.forEach(row => {
-              let isSelected: boolean = false;
+              let isSelected = false;
               if (selectedItemByPage[Math.ceil(this.props.table.offset / this.props.table.limit)] && this.props.table?.columnId !== undefined) {
-                let item = selectedItemByPage[Math.ceil(this.props.table.offset / this.props.table.limit)].find(it => it.id === row[this.props.table?.columnId]);
+                const item = selectedItemByPage[Math.ceil(this.props.table.offset / this.props.table.limit)].find(it => it.id === row[this.props.table?.columnId]);
                 if (item) {
                   isSelected = item.selected;
                 }
               }
 
-              let item: Item = {
+              const item: Item = {
                 id: row[this.props.table.columnId],
                 data: row,
                 selected: isSelected
@@ -230,7 +230,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
     statusCheckBoxByPage[this.state.npage] = checked;
     this.setState({selectedItemByPage: sitembpage, statusCheckBoxByPage: statusCheckBoxByPage}, () => {
       const items: any[] = [];
-      for (let key in this.state.selectedItemByPage) {
+      for (const key in this.state.selectedItemByPage) {
         this.state.selectedItemByPage[key].forEach(item => {
           if (item.selected)
             items.push(item.data);
@@ -259,7 +259,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
 
       this.checkTimeout = setTimeout(() => {
         const items: any[] = [];
-        for (let key in this.state.selectedItemByPage) {
+        for (const key in this.state.selectedItemByPage) {
           this.state.selectedItemByPage[key].forEach(item => {
             if (item.selected)
               items.push(item.data);
@@ -272,7 +272,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
   }
 
   protected isCheckedAllItems(sitembpage: SimpleMap<Item[]>): boolean {
-    let ret: boolean = true;
+    let ret = true;
     const items = sitembpage[this.state.npage];
     for (let i = 0; i < items.length; i++) {
       if (items[i].selected === false) {
@@ -322,7 +322,7 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
       newColumns = columns;
     }
 
-    let newRowCol: JSX.Element = <tr key={v4()} className={this.props.table.columnsClassname}>
+    const newRowCol: JSX.Element = <tr key={v4()} className={this.props.table.columnsClassname}>
       {(this.props.renderCheckBox !== undefined && this.props.renderCheckBox === true) && this.renderCheckBox(true, undefined)}
       {this.props.renderColumns ? this.props.renderColumns(newColumns) : (
         columns.map((name, i) => <th key={v4()} className={this.props.table.columnsClassname}>{newColumns[i]}</th>)
@@ -336,9 +336,9 @@ export class PaginatedEndpointTable extends Component<PaginatedEndpointTableProp
 
   protected renderRow(columns: string[], item: Item): JSX.Element {
 
-    let row: any = item.data;
+    const row: any = item.data;
 
-    let newRow: JSX.Element =
+    const newRow: JSX.Element =
       <tr key={v4()}
           className={this.props.table.rowsTRClassname}>
         {(this.props.renderCheckBox !== undefined && this.props.renderCheckBox === true) && this.renderCheckBox(false, item)}
